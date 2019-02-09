@@ -23,13 +23,16 @@ const app = express()
 
 // bring in routes
 const postRoute = require("./routes/post")
+const authRoutes = require("./routes/auth")
 
 // middleware
 app.use(morgan("dev"))
 app.use(bodyParser.json())
 app.use(expressValidator())
 
+
 app.use("/", postRoute)
+app.use("/", authRoutes)
 
 const port = process.env.PORT || 8080
 

@@ -17,6 +17,7 @@
     "mongoose": "^5.4.10",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.10",
-    "prettier": "^1.16.4"
+    "prettier": "^1.16.4",
+    "uuid": "^3.3.2"
   }
 }
