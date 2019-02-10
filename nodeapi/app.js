@@ -5,11 +5,13 @@ const log = console.log
 const dotenv = require("dotenv")
 const mongoose = require("mongoose")
 const bodyParser = require("body-parser")
-const expressValidator = require('express-validator')
-
+const cookieParser = require("cookie-parser")
+const expressValidator = require("express-validator")
 dotenv.config()
 
-//db
+/*
+  Database
+*/
 
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true }).then(() => {
   log(chalk.yellow("DB connected"))
@@ -21,18 +23,31 @@ mongoose.connection.on("error", err => {
 
 const app = express()
 
-// bring in routes
+/*
+  Routes
+*/
+
 const postRoute = require("./routes/post")
 const authRoutes = require("./routes/auth")
+const userRoutes = require("./routes/user")
 
-// middleware
+/*
+  middleware
+*/
+
 app.use(morgan("dev"))
 app.use(bodyParser.json())
+app.use(cookieParser())
 app.use(expressValidator())
-
-
 app.use("/", postRoute)
 app.use("/", authRoutes)
+app.use("/", userRoutes)
+
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).json({error: 'Unauthorized'});
+  }
+});
 
 const port = process.env.PORT || 8080
 
