@@ -1,5 +1,5 @@
 const express = require("express")
-const { userById, allUsers, getUser } = require("../controllers/user")
+const { userById, allUsers, getUser, updateUser } = require("../controllers/user")
 const { requireSignin } = require("../controllers/auth")
 
 const router = express.Router()
@@ -11,6 +11,7 @@ router.get("/users", allUsers)
 // on :userId
 
 router.get("/user/:userId", requireSignin, getUser)
+router.put("/user/:userId", requireSignin, updateUser)
 
 // execute if there is :userId on the url.
 // UserById method will trigger validation
