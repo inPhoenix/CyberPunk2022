@@ -31,3 +31,10 @@ exports.allUsers = (req, res) => {
     res.json({ users })
   }).select("name email updated created")
 }
+
+exports.getUser = (req, res) => {
+  // todo: refactor to spread instead of mutating
+  req.profile.hashed_password = undefined
+  req.profile.salt = undefined
+  return res.json(req.profile)
+}
