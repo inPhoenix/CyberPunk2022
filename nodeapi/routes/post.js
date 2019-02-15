@@ -8,11 +8,10 @@ const { getPosts, createPost } = require("../controllers/post")
 const router = express.Router()
 
 router.get("/", getPosts)
-router.post("/post", requireSignin, createPostValidator, createPost)
-
+router.post("/post/new/:userId", requireSignin, createPost, createPostValidator)
 
 // execute if there is :userId on the url.
 // UserById method will trigger validation
-router.param('userId', userById)
+router.param("userId", userById)
 
 module.exports = router
