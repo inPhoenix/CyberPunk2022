@@ -3,7 +3,8 @@ const formidable = require("formidable")
 const fs = require("fs")
 
 exports.getPosts = (req, res) => {
-  const posts = Post.find() // unused constant false negative
+  const posts = Post.find()
+    .populate('postedBy', '_id name')
     .select("_id title body")
     .then(posts => {
       res.json({ posts })
