@@ -10,7 +10,7 @@ const router = express.Router()
 router.get("/", getPosts)
 router.post("/post/new/:userId", requireSignin, createPost, createPostValidator)
 
-router.get('/posts/by/:userId', requireSignin, postsByUser)
+router.get('/posts/by/:userId', postsByUser)
 
 // execute if there is :userId on the url.
 // UserById method will trigger validation
