@@ -3,21 +3,28 @@ import { BrowserRouter, withRouter } from "react-router-dom"
 import MainRouter from "./MainRouter"
 import { connect, Provider } from "react-redux"
 import { configureStore } from "./store/configureStore"
-import { ThemeProvider } from "styled-components"
+import { ThemeProvider, createTheme } from 'arwes';
 
 const store = configureStore()
 
-const getTheme = () => {
-  return {
-    primary: "#a04ed9",
+const myTheme = {
+  color: {
+    primary: {
+      base: '#be26fc',
+      dark: '#8e1bbd',
+      light: '#c95bf6'
+    },
     header: {
-      videoOpacity: "0.1"
+      base: '#fc26fa',
+      dark: '#a818a7',
+      light: '#f458f2'
     }
   }
-}
+};
+
 
 const App = () => (
-  <ThemeProvider theme={getTheme()}>
+  <ThemeProvider theme={createTheme(myTheme)}>
     <Provider store={store}>
       <BrowserRouter>
         <MainRouter />

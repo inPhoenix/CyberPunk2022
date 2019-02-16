@@ -1,46 +1,52 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Field, formValueSelector, reduxForm } from "redux-form"
+import { Button, Frame, Project } from "arwes"
+
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning }
+}) => (
+  <div>
+    <label className={'text-muted'}>{label}</label>
+    <div>
+      <input className={'form-control'} {...input} placeholder={label} type={type} />
+      {touched &&
+        ((error && <span>{error}</span>) ||
+          (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+)
 
 class Signup extends Component {
-  state = {
-    name: "",
-    email: "",
-    password: "",
-    error: ""
-  }
-
-  go = () => {
-    console.log('%c submit now', 'background: red')
-  }
   render() {
-    const {formValues, handleSubmit} = this.props
-    console.log('%c formValues', 'background: red', formValues)
+    const { formValues, handleSubmit } = this.props
+    console.log("%c formValues", "background: red", formValues)
     return (
-      <form onSubmit={handleSubmit}>
-        <Field
-        name='data.name'
-        component='input'
-        />
-        <Field
-          name='data.password'
-          component='input'
-        />
-        <button
-          type='submit'
-        > submit</button>
+      <Project header={'SignUp'}animate level={1} corners={3}>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <Field name="data.name" component={renderField} />
+            <Field name="data.password" component={renderField} />
+            <Button animate layer='success'>
+              <i className='mdi mdi-chemical-weapon' /> Signin
+            </Button>
 
-      </form>
+          </div>
+        </form>
+      </Project>
+
     )
   }
 }
 
-
-const FORM_NAME = 'signup'
+const FORM_NAME = "signup"
 const form = reduxForm({ form: FORM_NAME })(Signup)
 const selector = formValueSelector(FORM_NAME)
 const mapStateToProps = state => {
-  const values = selector(state, 'data')
+  const values = selector(state, "data")
   return {
     formValues: values,
     home: state.home
