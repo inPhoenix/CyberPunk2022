@@ -1,14 +1,34 @@
-import React, { Component } from 'react';
-import Home from "./core/Home";
+import React, { Component } from "react"
+import { BrowserRouter, withRouter } from "react-router-dom"
+import MainRouter from "./MainRouter"
+import { connect, Provider } from "react-redux"
+import { configureStore } from "./store/configureStore"
+import { ThemeProvider } from "styled-components"
 
-class App extends Component {
-  render() {
-    return (
-     <div>
-       <Home/>
-     </div>
-    );
+const store = configureStore()
+
+const getTheme = () => {
+  return {
+    primary: "#a04ed9",
+    header: {
+      videoOpacity: "0.1"
+    }
   }
 }
 
-export default App;
+const App = () => (
+  <ThemeProvider theme={getTheme()}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <MainRouter />
+      </BrowserRouter>
+    </Provider>
+  </ThemeProvider>
+)
+
+const mapState = state => {
+  return {
+    placeholder: state
+  }
+}
+export default withRouter(connect(mapState)(App))
