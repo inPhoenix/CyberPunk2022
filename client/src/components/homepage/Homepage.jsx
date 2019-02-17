@@ -7,9 +7,6 @@ class Homepage extends Component {
   render() {
     return (
       <Arwes>
-        <Header animate>
-          <h1 style={{ margin: 0 }}>Arwes - Cyberpunk UI Framework</h1>
-        </Header>
           <MarginTop/>
         <Col s={12} m={8} l={6} offset={["m2", "l3"]}>
           <FrameC animate level={2} corners={1} layer={"success"}>
