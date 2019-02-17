@@ -18,12 +18,12 @@ export const userReducer = (state = INITIAL_STATE, action = {}) => {
     case SIGNUP:
       return {
         ...state,
-        loaded: "hi"
+        loaded: "success"
       }
     case ERROR:
       return {
         ...state,
-        loaded: "hi"
+        loaded: "error"
       }
     default:
       return state

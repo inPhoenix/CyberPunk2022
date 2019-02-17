@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Field, formValueSelector, reduxForm } from "redux-form"
-import { Button, Frame, Project } from "arwes"
+import { Button, Frame as FrameC, Project } from "arwes"
 
 const renderField = ({
   input,
@@ -62,7 +62,6 @@ const mapStateToProps = state => {
   const values = selector(state, "data")
   return {
     formValues: values,
-    home: state.home
   }
 }
 
