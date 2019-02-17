@@ -10,7 +10,8 @@ const ISLOADING = "cyberpunk-media/ISLOADING"
 
 const INITIAL_STATE = {
   isSignedIn: null,
-  userId: null
+  loaded: {},
+  isError: false,
 }
 
 // Reducer
@@ -19,12 +20,14 @@ export const userReducer = (state = INITIAL_STATE, action = {}) => {
     case SIGNUP:
       return {
         ...state,
+        isError: false,
         loaded: action.payload
       }
     case ERROR:
       return {
         ...state,
-        loaded: "error"
+        loaded: {},
+        isError: true
       }
     case ISLOADING:
       return {
@@ -55,6 +58,35 @@ export const signUp = (values = {}) => {
       history.push("/")
     }
   }
+}
+
+export const signOut = () => {
+  return async dispatch => {
+    dispatch(setLoading(true))
+    let [err, response] = await to(cyberpunk.post("/signout"))
+
+    if (err) {
+      const safeError = {
+        data: {},
+        ...err
+      }
+      errorLog(safeError.response.data)
+      dispatch(setLoading(false))
+      await dispatch(errorHandling())
+    } else {
+      const safeResponse = {
+        data: {},
+      }
+      await dispatch(updateUser(safeResponse))
+      if (window != null) {
+        localStorage.removeItem("jwt")
+      }
+      dispatch(setLoading(false))
+      history.push("/")
+    }
+  }
+
+
 }
 
 export const signIn = (values = {}) => {
