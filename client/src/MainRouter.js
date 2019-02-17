@@ -29,40 +29,8 @@ const renderLogout = (user, signOut) => {
   )
 }
 
-const renderSignInSignUp = user => {
-  if (user.loaded.token) {
-    return
-  }
-
-  return (
-    <React.Fragment>
-      <NavItem eventKey="signIn">
-        <NavIcon>
-          <i
-            className="icon-color fas fa-sign-in-alt"
-            style={{ fontSize: "1.50em" }}
-          />
-        </NavIcon>
-        <NavText>
-          <div className="link-color">Login</div>
-        </NavText>
-      </NavItem>
-      <NavItem eventKey="signUp">
-        <NavIcon>
-          <i
-            className="icon-color fas fa-user-plus"
-            style={{ fontSize: "1.50em" }}
-          />
-        </NavIcon>
-        <NavText>
-          <div className="link-color">Sign Up</div>
-        </NavText>
-      </NavItem>
-    </React.Fragment>
-  )
-}
-
 const MainRouter = ({ signOut, user }) => {
+  const isLoggedIn = user.loaded.token
   return (
     <div>
       <Router history={history}>
@@ -81,19 +49,20 @@ const MainRouter = ({ signOut, user }) => {
               >
                 <SideNav.Toggle />
                 <SideNav.Nav defaultSelected="home">
-                  {!user.loaded.token && (
-                  <NavItem eventKey="home">
-                    <NavIcon>
-                      <i
-                        className="icon-color fa fa-fw fa-home"
-                        style={{ fontSize: "1.50em" }}
-                      />
-                    </NavIcon>
-                    <NavText>
-                      <div className="link-color">Home</div>
-                    </NavText>
-                  </NavItem>)}
-                  {!user.loaded.token && (
+                  {!isLoggedIn && (
+                    <NavItem eventKey="home">
+                      <NavIcon>
+                        <i
+                          className="icon-color fa fa-fw fa-home"
+                          style={{ fontSize: "1.50em" }}
+                        />
+                      </NavIcon>
+                      <NavText>
+                        <div className="link-color">Home</div>
+                      </NavText>
+                    </NavItem>
+                  )}
+                  {!isLoggedIn && (
                     <NavItem eventKey="signIn">
                       <NavIcon>
                         <i
@@ -106,7 +75,7 @@ const MainRouter = ({ signOut, user }) => {
                       </NavText>
                     </NavItem>
                   )}
-                  {!user.loaded.token && (
+                  {!isLoggedIn && (
                     <NavItem eventKey="signUp">
                       <NavIcon>
                         <i
