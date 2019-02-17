@@ -1,15 +1,18 @@
 import React from "react"
-import { Route, Switch, withRouter } from "react-router-dom";
+import { Route, Router, Switch, withRouter } from "react-router-dom"
 import Home from "./core/Home"
 import { connect } from "react-redux";
 import SignupContainer from "./components/user/SignupContainer"
+import history from './history'
 
 const MainRouter = () => (
   <div>
+    <Router history={history}>
     <Switch>
-      <Route path="/" component={SignupContainer} />
+      <Route path="/signUp" component={SignupContainer} />
       <Route path="/" component={Home} />
     </Switch>
+    </Router>
   </div>
 )
 

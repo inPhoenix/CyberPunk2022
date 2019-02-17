@@ -10,9 +10,14 @@ const renderField = ({
   meta: { touched, error, warning }
 }) => (
   <div>
-    <label className={'text-muted'}>{label}</label>
+    <label className={"text-muted"}>{label}</label>
     <div>
-      <input className={'form-control'} {...input} placeholder={label} type={type} />
+      <input
+        className={"form-control"}
+        {...input}
+        placeholder={label}
+        type={type}
+      />
       {touched &&
         ((error && <span>{error}</span>) ||
           (warning && <span>{warning}</span>))}
@@ -22,22 +27,30 @@ const renderField = ({
 
 class Signup extends Component {
   render() {
-    const { formValues, handleSubmit } = this.props
-    console.log("%c formValues", "background: red", formValues)
+    const { handleSubmit } = this.props
     return (
-      <Project header={'SignUp'}animate level={1} corners={3}>
+      <Project header={"SignUp"} animate level={1} corners={3}>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <Field name="data.name" component={renderField} />
-            <Field name="data.password" component={renderField} />
-            <Button animate layer='success'>
-              <i className='mdi mdi-chemical-weapon' /> Signin
+            <Field name="name" label={"name"} component={renderField} />
+            <Field
+              name="email"
+              type={"email"}
+              label={"email"}
+              component={renderField}
+            />
+            <Field
+              name="password"
+              type={"password"}
+              label={"password"}
+              component={renderField}
+            />
+            <Button animate layer="success">
+              <i className="mdi mdi-chemical-weapon" /> Signin
             </Button>
-
           </div>
         </form>
       </Project>
-
     )
   }
 }

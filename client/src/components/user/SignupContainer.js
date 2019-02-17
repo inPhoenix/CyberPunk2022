@@ -10,17 +10,13 @@ const Container = styled.div`
 `
 
 class SignupContainer extends Component {
-  handleSubmit = () => {
-    this.props.signUp()
+  handleSubmit = (values) => {
+    this.props.signUp(values)
   }
   render() {
     return (
       <Arwes>
         <Container>
-          {/*<Header animate>
-          <Container>CyberPunk Social Media</Container>
-        </Header>*/}
-
           <Row>
             <Col s={12} m={8} l={6} offset={["m2", "l3"]}>
               <Signup onSubmit={this.handleSubmit} />
