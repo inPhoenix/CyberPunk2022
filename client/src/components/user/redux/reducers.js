@@ -6,6 +6,7 @@ import history from "../../../history"
 // Actions
 const SIGNUP = "cyberpunk-media/SIGNUP"
 const ERROR = "cyberpunk-media/ERROR"
+const ISLOADING = "cyberpunk-media/ISLOADING"
 
 const INITIAL_STATE = {
   isSignedIn: null,
@@ -18,12 +19,17 @@ export const userReducer = (state = INITIAL_STATE, action = {}) => {
     case SIGNUP:
       return {
         ...state,
-        loaded: "success"
+        loaded: action.payload
       }
     case ERROR:
       return {
         ...state,
         loaded: "error"
+      }
+    case ISLOADING:
+      return {
+        ...state,
+        isLoading: action.status
       }
     default:
       return state
@@ -53,27 +59,34 @@ export const signUp = (values = {}) => {
 
 export const signIn = (values = {}) => {
   return async dispatch => {
+    dispatch(setLoading(true))
     let [err, response] = await to(cyberpunk.post("/signin", values))
 
     if (err) {
       const safeError = {
-          data: {},
+        data: {},
         ...err
       }
       errorLog(safeError.response.data)
+      dispatch(setLoading(false))
       await dispatch(errorHandling())
     } else {
       const safeResponse = {
-          data: {},
+        data: {},
         ...response
       }
-      await dispatch(updateUser(safeResponse.response.data))
+      await dispatch(updateUser(safeResponse.data))
       if (window != null) {
         localStorage.setItem("jwt", JSON.stringify(safeResponse.data))
       }
+      dispatch(setLoading(false))
       history.push("/homepage")
     }
   }
+}
+
+const setLoading = state => {
+  return { type: ISLOADING, status: state }
 }
 
 export const updateUser = data => {
