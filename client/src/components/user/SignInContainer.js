@@ -2,16 +2,17 @@ import React, { Component } from "react"
 import Signup from "./Signup"
 import { Arwes, Col, Frame as FrameC, Header, Row, Words } from "arwes"
 import styled from "styled-components"
-import { signUp } from "./redux/reducers"
+import { signIn } from "./redux/reducers"
 import { connect } from "react-redux"
+import SignIn from "./SignIn"
 
 const Container = styled.div`
   margin-top: 100px;
 `
 
-class SignupContainer extends Component {
+class SignInContainer extends Component {
   handleSubmit = values => {
-    this.props.signUp(values)
+    this.props.signIn(values)
   }
   render() {
     const { user } = this.props
@@ -21,7 +22,7 @@ class SignupContainer extends Component {
         <Container>
           <Row>
             <Col s={12} m={8} l={6} offset={["m2", "l3"]}>
-              <Signup onSubmit={this.handleSubmit} />
+              <SignIn onSubmit={this.handleSubmit} />
             </Col>
           </Row>
           <Row>
@@ -50,5 +51,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { signUp }
-)(SignupContainer)
+  { signIn }
+)(SignInContainer)

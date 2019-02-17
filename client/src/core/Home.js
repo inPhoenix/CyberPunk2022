@@ -26,7 +26,7 @@ class Home extends Component {
                 </Link>
               </div>
               <div style={{ margin: 20 }}>
-                <Link to={"/Login"}>
+                <Link to={"/signIn"}>
                   <Lnk>Login</Lnk>
                 </Link>
               </div>

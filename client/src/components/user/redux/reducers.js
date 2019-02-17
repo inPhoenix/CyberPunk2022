@@ -51,8 +51,28 @@ export const signUp = (values = {}) => {
   }
 }
 
-export const updateUser = () => {
-  return { type: SIGNUP, payload: "user-logged" }
+
+export const signIn = (values = {}) => {
+  return async dispatch => {
+    let [err, response] = await to(cyberpunk.post("/signin", values))
+    const safeError = {
+      response: {
+        data: {}
+      },
+      ...err,
+    }
+    if (err) {
+      errorLog(safeError.response.data)
+      await dispatch(errorHandling())
+    } else {
+      await dispatch(updateUser(safeError.response.data))
+      history.push('/homepage')
+    }
+  }
+}
+
+export const updateUser = (data) => {
+  return { type: SIGNUP, payload: data }
 }
 
 export const errorHandling = () => {
