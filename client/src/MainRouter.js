@@ -29,7 +29,7 @@ const MainRouter = () => (
                   <i className="icon-color fa fa-fw fa-home" style={{ fontSize: '1.50em' }} />
                 </NavIcon>
                 <NavText>
-                  Home
+                  <div className='link-color'>Home</div>
                 </NavText>
               </NavItem>
               <NavItem eventKey="signIn">
@@ -37,7 +37,7 @@ const MainRouter = () => (
                   <i className="icon-color fas fa-sign-in-alt" style={{ fontSize: '1.50em' }} />
                 </NavIcon>
                 <NavText>
-                  Login
+                  <div className='link-color'>Login</div>
                 </NavText>
               </NavItem><NavItem eventKey="signUp">
                 <NavIcon>
@@ -45,7 +45,7 @@ const MainRouter = () => (
                   <i className="icon-color fas fa-user-plus" style={{ fontSize: '1.50em' }} />
                 </NavIcon>
                 <NavText>
-                  Sign Up
+                  <div className='link-color'>Sign Up</div>
                 </NavText>
               </NavItem>
             </SideNav.Nav>
