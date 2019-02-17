@@ -36,7 +36,13 @@ export const signUp = (values = {}) => {
     let err, response
     ;[err, response] = await to(cyberpunk.post("/signup", values))
     if (err) {
-      errorLog(err.response.data)
+      const safeError = {
+        response: {
+          data: {}
+        },
+        ...err,
+      }
+      errorLog(safeError.response.data)
       await dispatch(errorHandling())
     } else {
       await dispatch(updateUser(response.data))
