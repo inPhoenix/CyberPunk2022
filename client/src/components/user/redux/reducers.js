@@ -1,5 +1,5 @@
 import cyberpunk from "../../../apis/cyberpunk"
-import history from '../../../history'
+import history from "../../../history"
 // This is a duck
 // https://github.com/erikras/ducks-modular-redux
 
@@ -40,38 +40,43 @@ export const signUp = (values = {}) => {
         response: {
           data: {}
         },
-        ...err,
+        ...err
       }
       errorLog(safeError.response.data)
       await dispatch(errorHandling())
     } else {
       await dispatch(updateUser(response.data))
-      history.push('/')
+      history.push("/")
     }
   }
 }
-
 
 export const signIn = (values = {}) => {
   return async dispatch => {
     let [err, response] = await to(cyberpunk.post("/signin", values))
-    const safeError = {
-      response: {
-        data: {}
-      },
-      ...err,
-    }
+
     if (err) {
+      const safeError = {
+          data: {},
+        ...err
+      }
       errorLog(safeError.response.data)
       await dispatch(errorHandling())
     } else {
-      await dispatch(updateUser(safeError.response.data))
-      history.push('/homepage')
+      const safeResponse = {
+          data: {},
+        ...response
+      }
+      await dispatch(updateUser(safeResponse.response.data))
+      if (window != null) {
+        localStorage.setItem("jwt", JSON.stringify(safeResponse.data))
+      }
+      history.push("/homepage")
     }
   }
 }
 
-export const updateUser = (data) => {
+export const updateUser = data => {
   return { type: SIGNUP, payload: data }
 }
 
@@ -82,7 +87,6 @@ export const errorHandling = () => {
 const errorLog = error => {
   console.log("%c Error: ", "background: red; color: yellow", error)
 }
-
 
 //utility function to catch errors
 const to = promise => {
