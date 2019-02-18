@@ -9,7 +9,10 @@ import './style.scss'
 
 const store = configureStore()
 
+// https://github.com/arwesjs/arwes/blob/master/packages/arwes/src/tools/createTheme/theme.js
+
 const myTheme = {
+  animTime: 250,
   color: {
     primary: {
       base: '#be26fc',
@@ -20,8 +23,15 @@ const myTheme = {
       base: '#fc26fa',
       dark: '#a818a7',
       light: '#f458f2'
+    },
+    animate: {
+      primary: {
+        base: '#030021',
+      },
+      base: '#030021',
     }
-  }
+  },
+
 };
 
 
