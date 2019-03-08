@@ -7,7 +7,7 @@ public/styles.css
 public/styles.css.map
 .idea/
 .env.test
-.env
+#.env
 .env.development
 /src/actions/secrets.js
 /secret
