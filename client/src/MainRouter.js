@@ -8,6 +8,11 @@ import SignInContainer from "./components/user/SignInContainer"
 import Homepage from "./components/homepage/Homepage"
 import { signOut } from "./components/user/redux/reducers"
 import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav"
+import Profile from "./components/user/Profile"
+import {get} from 'lodash'
+
+
+const PATH = process.env.NODE_ENV === 'production' ? '/socialNet/' : '/'
 
 const renderLogout = (user, signOut) => {
   if (!user.loaded.token) {
@@ -29,7 +34,48 @@ const renderLogout = (user, signOut) => {
   )
 }
 
+const renderProfile = (user) => {
+  if (!user.loaded.token) {
+    return
+  }
+
+  return (
+    <NavItem eventKey={`profile`}>
+      <NavIcon>
+        <i
+          className="icon-color fas fa-user"
+          style={{ fontSize: "1.50em" }}
+        />
+      </NavIcon>
+      <NavText>
+        <div className="link-color">Profile</div>
+      </NavText>
+    </NavItem>
+  )
+}
+
+const renderHomepage = (user) => {
+  if (!user.loaded.token) {
+    return
+  }
+
+  return (
+    <NavItem eventKey="homepage">
+      <NavIcon>
+        <i
+          className="icon-color fas fa-home"
+          style={{ fontSize: "1.50em" }}
+        />
+      </NavIcon>
+      <NavText>
+        <div className="link-color">Home</div>
+      </NavText>
+    </NavItem>
+  )
+}
+
 const MainRouter = ({ signOut, user }) => {
+  const getUserId = get(user, 'loaded.user._id')
   const isLoggedIn = user.loaded.token
   return (
     <div>
@@ -41,16 +87,21 @@ const MainRouter = ({ signOut, user }) => {
                 componentClass="div"
                 className="phoenix"
                 onSelect={selected => {
+                  console.log('%c selected', 'background: red', selected)
                   const to = "/" + selected
+                  if (selected === 'profile') {
+                    console.log('%c here', 'background: red')
+                    return history.push(`user/${getUserId}`)
+                  }
                   if (location.pathname !== to) {
                     history.push(to)
                   }
                 }}
               >
                 <SideNav.Toggle />
-                <SideNav.Nav defaultSelected="home">
+                <SideNav.Nav defaultSelected="homepage">
                   {!isLoggedIn && (
-                    <NavItem eventKey="home">
+                    <NavItem eventKey="homepage">
                       <NavIcon>
                         <i
                           className="icon-color fa fa-fw fa-home"
@@ -88,14 +139,17 @@ const MainRouter = ({ signOut, user }) => {
                       </NavText>
                     </NavItem>
                   )}
+                  {renderHomepage(user)}
+                  {renderProfile(user)}
                   {renderLogout(user, signOut)}
                 </SideNav.Nav>
               </SideNav>
               <Switch>
-                <Route path="/signUp" component={SignupContainer} />
-                <Route path="/signIn" component={SignInContainer} />
-                <Route path="/Homepage" component={Homepage} />
-                <Route path="/" component={Home} />
+                <Route path={`${PATH}signUp`} component={SignupContainer} />
+                <Route path={`${PATH}signIn`} component={SignInContainer} />
+                <Route path={`${PATH}homepage`} component={Homepage} />
+                <Route path={`${PATH}user/:userId`} component={Profile} />
+                <Route path={`${PATH}`} component={Home} />
               </Switch>
             </React.Fragment>
           )}

@@ -69,11 +69,17 @@ class SignIn extends Component {
 const FORM_NAME = "loginForm"
 const form = reduxForm({ form: FORM_NAME })(SignIn)
 const selector = formValueSelector(FORM_NAME)
+
+const initialValues = {
+  email: 'defaultUser@gmail.com',
+  password: 'default123'
+}
 const mapStateToProps = state => {
   const values = selector(state, "data")
   return {
     formValues: values,
-    user: state.user
+    user: state.user,
+    initialValues: initialValues
   }
 }
 
