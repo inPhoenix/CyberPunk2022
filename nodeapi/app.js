@@ -38,6 +38,7 @@ const userRoutes = require("./routes/user")
   Api Docs
  */
 
+
 app.get('/', (req,res) => {
   fs.readFile('docs/apiDocs.json', (err, data) => {
     if(err) {
@@ -68,6 +69,18 @@ app.use(function (err, req, res, next) {
     res.status(401).json({error: 'Unauthorized'});
   }
 });
+
+// react stuff
+if (['production'].includes(process.env.NODE_ENV)) {
+  app.use(express.static('client/build'));
+
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve('client', 'build', 'index.html'));
+  });
+}
+
+
 
 const port = process.env.PORT || 8080
 
