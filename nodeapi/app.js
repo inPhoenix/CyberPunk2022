@@ -51,15 +51,29 @@ app.get('/docs', (req,res) => {
   })
 })
 
+const origin = process.env.NODE_ENV === 'production' ?
+  'https://cybersocial.herokuapp.com' :
+  'http://localhost:3000';
+
 /*
   middleware
 */
+
+if (['production'].includes(process.env.NODE_ENV)) {
+  app.use(express.static('client/build'));
+
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve('client', 'build', 'index.html'));
+  });
+}
 
 app.use(morgan("dev"))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(expressValidator())
-app.use(cors())
+//app.use(cors())
+app.use(cors({ origin, credentials: true }));
 app.use("/", postRoute)
 app.use("/", authRoutes)
 app.use("/", userRoutes)
@@ -70,27 +84,19 @@ app.use(function (err, req, res, next) {
   }
 });
 
-// react stuff
+// // react stuff
+//
+// const test = true;
+//
+// if (test) {
+//   app.use(express.static('client/build'));
+//
+//   const path = require('path');
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.resolve('client', 'build', 'index.html'));
+//   });
+// }
 
-const test = true;
-
-if (test) {
-  app.use(express.static('client/build'));
-
-  const path = require('path');
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve('client', 'build', 'index.html'));
-  });
-}
-
-if (['production'].includes(process.env.NODE_ENV)) {
-  app.use(express.static('client/build'));
-
-  const path = require('path');
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve('client', 'build', 'index.html'));
-  });
-}
 
 
 
