@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node index.js --prefix nodeapi",
-    "server": "nodemon index.js --prefix nodeapi",
+    "start": "NODE_ENV=production npm run --prefix nodeapi server",
+    "server": "nodemon app.js --prefix nodeapi",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
