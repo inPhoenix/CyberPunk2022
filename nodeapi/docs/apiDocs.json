@@ -8,6 +8,5 @@
   "/posts": "get all posts",
   "/posts/new/:userId": "create new posts",
   "/posts/by/:userId": "get posts by user",
-  "/post/:postId": "update/delete  post",
-
+  "/post/:postId": "update/delete  post"
 }
