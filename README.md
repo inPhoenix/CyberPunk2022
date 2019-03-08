@@ -7,4 +7,8 @@
     # inSocial
    
 
-    
+https://cybersocial.herokuapp.com/
+
+# Heroku debug
+
+heroku logs --tail
