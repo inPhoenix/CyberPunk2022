@@ -39,7 +39,7 @@ const userRoutes = require("./routes/user")
  */
 
 
-app.get('/', (req,res) => {
+app.get('/docs', (req,res) => {
   fs.readFile('docs/apiDocs.json', (err, data) => {
     if(err) {
       res.status(400).json({
