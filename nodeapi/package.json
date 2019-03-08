@@ -7,6 +7,9 @@
     "dev": "nodemon app.js",
     "server": "node app.js"
   },
+  "engines": {
+    "node": "11.1.0"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
