@@ -6,7 +6,7 @@ public/bundle.js.map
 public/styles.css
 public/styles.css.map
 .idea/
-#.env
+.env
 .env.test
 .env.development
 /src/actions/secrets.js
