@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Route, Router, Switch, withRouter } from "react-router-dom"
 import Home from "./core/Home"
 import { connect } from "react-redux"
@@ -9,10 +9,9 @@ import Homepage from "./components/homepage/Homepage"
 import { signOut } from "./components/user/redux/reducers"
 import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav"
 import Profile from "./components/user/Profile"
-import {get} from 'lodash'
+import { get } from "lodash"
 
-
-const PATH = process.env.NODE_ENV === 'production' ? '/' : '/'
+const PATH = process.env.NODE_ENV === "production" ? "/" : "/"
 
 const renderLogout = (user, signOut) => {
   if (!user.loaded.token) {
@@ -34,7 +33,7 @@ const renderLogout = (user, signOut) => {
   )
 }
 
-const renderProfile = (user) => {
+const renderProfile = user => {
   if (!user.loaded.token) {
     return
   }
@@ -42,10 +41,7 @@ const renderProfile = (user) => {
   return (
     <NavItem eventKey={`profile`}>
       <NavIcon>
-        <i
-          className="icon-color fas fa-user"
-          style={{ fontSize: "1.50em" }}
-        />
+        <i className="icon-color fas fa-user" style={{ fontSize: "1.50em" }} />
       </NavIcon>
       <NavText>
         <div className="link-color">Profile</div>
@@ -54,19 +50,16 @@ const renderProfile = (user) => {
   )
 }
 
-const renderHomepage = (user) => {
+const renderHomepage = user => {
   if (!user.loaded.token) {
-    console.log('%c user', 'background: red', user.loaded.token)
+    console.log("%c user", "background: red", user.loaded.token)
     return
   }
 
   return (
     <NavItem eventKey="homepage">
       <NavIcon>
-        <i
-          className="icon-color fas fa-home"
-          style={{ fontSize: "1.50em" }}
-        />
+        <i className="icon-color fas fa-home" style={{ fontSize: "1.50em" }} />
       </NavIcon>
       <NavText>
         <div className="link-color">Home</div>
@@ -76,8 +69,13 @@ const renderHomepage = (user) => {
 }
 
 const MainRouter = ({ signOut, user }) => {
-  const getUserId = get(user, 'loaded.user._id')
+  function clickedTest() {
+    setExpanded(!expanded)
+  }
+
+  const getUserId = get(user, "loaded.user._id")
   const isLoggedIn = user.loaded.token
+  const [expanded, setExpanded] = useState(false)
   return (
     <div>
       <Router history={history}>
@@ -85,13 +83,12 @@ const MainRouter = ({ signOut, user }) => {
           render={({ location, history }) => (
             <React.Fragment>
               <SideNav
+                onToggle={() => clickedTest()}
                 componentClass="div"
                 className="phoenix"
                 onSelect={selected => {
-                  console.log('%c selected', 'background: red', selected)
                   const to = "/" + selected
-                  if (selected === 'profile') {
-                    console.log('%c here', 'background: red')
+                  if (selected === "profile") {
                     return history.push(`user/${getUserId}`)
                   }
                   if (location.pathname !== to) {
@@ -145,12 +142,34 @@ const MainRouter = ({ signOut, user }) => {
                   {renderLogout(user, signOut)}
                 </SideNav.Nav>
               </SideNav>
+
               <Switch>
-                <Route path={`${PATH}signUp`} component={SignupContainer} />
-                <Route path={`${PATH}signIn`} component={SignInContainer} />
-                <Route path={`${PATH}homepage`} component={Homepage} />
-                <Route path={`${PATH}user/:userId`} component={Profile} />
-                <Route path={`${PATH}`} component={Home} />
+                <Route
+                  path={`${PATH}signUp`}
+                  render={props => (
+                    <SignupContainer isExpanded={expanded} {...props} />
+                  )}
+                />
+                <Route
+                  path={`${PATH}signIn`}
+                  render={props => (
+                    <SignInContainer isExpanded={expanded} {...props} />
+                  )}
+                />
+                <Route
+                  path={`${PATH}homepage`}
+                  render={props => (
+                    <Homepage isExpanded={expanded} {...props} />
+                  )}
+                />
+                <Route
+                  path={`${PATH}user/:userId`}
+                  render={props => <Profile isExpanded={expanded} {...props} />}
+                />
+                <Route
+                  path={`${PATH}`}
+                  render={props => <Home isExpanded={expanded} {...props} />}
+                />
               </Switch>
             </React.Fragment>
           )}

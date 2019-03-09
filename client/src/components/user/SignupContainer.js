@@ -14,10 +14,9 @@ class SignupContainer extends Component {
     this.props.signUp(values)
   }
   render() {
-    const { user } = this.props
-    console.log("%c user", "background: red", user)
+    const { user, isExpanded } = this.props
     return (
-      <Arwes>
+      <Arwes style={{ marginLeft: isExpanded ? '240px' : '0' }}>
         <Container>
           <Row>
             <Col s={12} m={8} l={6} offset={["m2", "l3"]}>

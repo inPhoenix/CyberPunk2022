@@ -6,7 +6,7 @@ import { MarginTop } from "../../common/styled/MarginTop"
 class Homepage extends Component {
   render() {
     return (
-      <Arwes>
+      <Arwes style={{ marginLeft: this.props.isExpanded ? '240px' : '0' }}>
           <MarginTop/>
         <Col s={12} m={8} l={6} offset={["m2", "l3"]}>
           <FrameC animate level={2} corners={1} layer={"success"}>
