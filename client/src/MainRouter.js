@@ -56,6 +56,7 @@ const renderProfile = (user) => {
 
 const renderHomepage = (user) => {
   if (!user.loaded.token) {
+    console.log('%c user', 'background: red', user.loaded.token)
     return
   }
 
@@ -99,9 +100,9 @@ const MainRouter = ({ signOut, user }) => {
                 }}
               >
                 <SideNav.Toggle />
-                <SideNav.Nav defaultSelected="homepage">
+                <SideNav.Nav defaultSelected="home">
                   {!isLoggedIn && (
-                    <NavItem eventKey="homepage">
+                    <NavItem eventKey="home">
                       <NavIcon>
                         <i
                           className="icon-color fa fa-fw fa-home"
