@@ -12,7 +12,7 @@ import Profile from "./components/user/Profile"
 import {get} from 'lodash'
 
 
-const PATH = process.env.NODE_ENV === 'production' ? '/socialNet/' : '/'
+const PATH = process.env.NODE_ENV === 'production' ? '/' : '/'
 
 const renderLogout = (user, signOut) => {
   if (!user.loaded.token) {
