@@ -1,11 +1,8 @@
 import axios from 'axios'
 
-// export default axios.create({
-//   baseURL: 'https://cybersocial.herokuapp.com'
-// })
-
+const isProduction = process.env.NODE_ENV === 'production'
 
 //Local Environment
 export default axios.create({
-  baseURL: 'http://localhost:8080'
+  baseURL: isProduction ? 'https://cybersocial.herokuapp.com' : 'http://localhost:8080'
 })
