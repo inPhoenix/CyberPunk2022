@@ -43,11 +43,12 @@ export const signUp = (values = {}) => {
   return async dispatch => {
     let [err, response] = await to(cyberpunk.post("/signup", values))
     if (err) {
+      console.log('%c err', 'background: red', err)
       const safeError = {
         response: {
-          data: {}
-        },
+          data: {},
         ...err
+        },
       }
       errorLog(safeError.response.data)
       await dispatch(errorHandling())
