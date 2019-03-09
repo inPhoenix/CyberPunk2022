@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://cybersocial.herokuapp.com/",
   "dependencies": {
     "@trendmicro/react-sidenav": "^0.4.5",
     "arwes": "^1.0.0-alpha.5",

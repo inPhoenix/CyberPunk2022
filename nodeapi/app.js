@@ -63,12 +63,12 @@ const origin = process.env.NODE_ENV === 'production' ?
 */
 
 if (['production'].includes(process.env.NODE_ENV)) {
-  app.use(express.static('client/build'));
+  app.use(express.static('../client/build'));
 
   const path = require('path');
   app.get('*', (req, res) => {
     console.log('im HEEERE')
-    res.sendFile(path.resolve('client', 'build', 'index.html'));
+    res.sendFile(path.resolve('../client', 'build', 'index.html'));
   });
 }
 
