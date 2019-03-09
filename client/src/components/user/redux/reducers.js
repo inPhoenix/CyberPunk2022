@@ -92,9 +92,12 @@ export const signIn = (values = {}) => {
     let [err, response] = await to(cyberpunk.post("/signin", values))
 
     if (err) {
+      console.log('%c err', 'background: red', err)
       const safeError = {
-        data: {},
+        response: {
+          data: 'error',
         ...err
+        }
       }
       errorLog(safeError.response.data)
       dispatch(setLoading(false))
