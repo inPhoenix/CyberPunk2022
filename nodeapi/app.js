@@ -62,16 +62,6 @@ const origin = process.env.NODE_ENV === 'production' ?
   middleware
 */
 
-if (['production'].includes(process.env.NODE_ENV)) {
-  app.use(express.static('../client/build'));
-
-  const path = require('path');
-  app.get('*', (req, res) => {
-    console.log('im HEEERE')
-    res.sendFile(path.resolve('../client', 'build', 'index.html'));
-  });
-}
-
 app.use(morgan("dev"))
 app.use(bodyParser.json())
 app.use(cookieParser())
@@ -88,19 +78,16 @@ app.use(function (err, req, res, next) {
   }
 });
 
-// // react stuff
-//
-// const test = true;
-//
-// if (test) {
-//   app.use(express.static('client/build'));
-//
-//   const path = require('path');
-//   app.get('*', (req, res) => {
-//     res.sendFile(path.resolve('client', 'build', 'index.html'));
-//   });
-// }
+// After middleware: to handle the react render
+if (['production'].includes(process.env.NODE_ENV)) {
+  app.use(express.static('../client/build'));
 
+  const path = require('path');
+  app.get('*', (req, res) => {
+    console.log('im HEEERE')
+    res.sendFile(path.resolve('../client', 'build', 'index.html'));
+  });
+}
 
 
 
