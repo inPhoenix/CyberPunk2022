@@ -7,6 +7,8 @@ import history from "../../../history"
 const SIGNUP = "cyberpunk-media/SIGNUP"
 const ERROR = "cyberpunk-media/ERROR"
 const ISLOADING = "cyberpunk-media/ISLOADING"
+const AUTH = "cyberpunk-media/AUTH"
+const LOADED_USER = "cyberpunk-media/LOADED_USER"
 
 const INITIAL_STATE = {
   isSignedIn: null,
@@ -17,6 +19,16 @@ const INITIAL_STATE = {
 // Reducer
 export const userReducer = (state = INITIAL_STATE, action = {}) => {
   switch (action.type) {
+    case AUTH:
+      return {
+        ...state,
+        isAuth: action.payload
+      }
+      case LOADED_USER:
+      return {
+        ...state,
+        loadedUser: action.payload
+      }
     case SIGNUP:
       return {
         ...state,
@@ -43,12 +55,12 @@ export const signUp = (values = {}) => {
   return async dispatch => {
     let [err, response] = await to(cyberpunk.post("/signup", values))
     if (err) {
-      console.log('%c err', 'background: red', err)
+      console.log("%c err", "background: red", err)
       const safeError = {
         response: {
           data: {},
-        ...err
-        },
+          ...err
+        }
       }
       errorLog(safeError.response.data)
       await dispatch(errorHandling())
@@ -92,11 +104,11 @@ export const signIn = (values = {}) => {
     let [err, response] = await to(cyberpunk.post("/signin", values))
 
     if (err) {
-      console.log('%c err', 'background: red', err)
+      console.log("%c err", "background: red", err)
       const safeError = {
         response: {
-          data: 'error',
-        ...err
+          data: "error",
+          ...err
         }
       }
       errorLog(safeError.response.data)
@@ -140,4 +152,49 @@ const to = promise => {
       return [null, data]
     })
     .catch(err => [err])
+}
+
+export const checkIsAuthenticated = (values = {}) => {
+  return async dispatch => {
+    const getToken = JSON.parse(localStorage.getItem("jwt"))
+    dispatch(isAuthenticated(getToken)) // always dispatch a function
+  }
+}
+
+export const loadedUser = (user) => {
+  return {type: LOADED_USER, payload: user }
+}
+
+export const getUserInformation = (userId) => {
+  const getToken = JSON.parse(localStorage.getItem("jwt")).token
+  cyberpunk.defaults.headers.common = {'Authorization': `bearer ${getToken}`}
+
+  return async dispatch => {
+    const response = await cyberpunk.get(`/user/${userId}`)
+    dispatch(loadedUser(response.data))
+
+  }
+}
+
+export const isAuthenticated = token => {
+  return { type: AUTH, payload: token }
+}
+
+// Helper without redux
+export const isAuthenticatedPure = () => {
+  return { type: AUTH, payload: JSON.parse(localStorage.getItem("jwt")) }
+  if (window == null) {
+    console.log("%c nowindow", "background: blue")
+    return false
+  }
+  if (localStorage.getItem("jwt")) {
+    console.log(
+      "%c json",
+      "background: yellow",
+      JSON.parse(localStorage.getItem("jwt"))
+    )
+    return { type: AUTH, payload: JSON.parse(localStorage.getItem("jwt")) }
+  } else {
+    return false
+  }
 }

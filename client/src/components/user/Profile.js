@@ -1,6 +1,12 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Arwes, Content, Project, Words } from "arwes"
+import { Arwes, Button, Content, Project, Words } from "arwes"
+import {
+  checkIsAuthenticated,
+  isAuthenticated,
+  getUserInformation
+} from "./redux/reducers"
+import { Redirect } from "react-router-dom"
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
 
 class Profile extends Component {
@@ -14,37 +20,39 @@ class Profile extends Component {
     return !!user.loaded.token
   }
 
+
   notAuthorized() {
-    return (
-      <Arwes style={{ marginLeft: this.props.isExpanded ? "190px" : "0" }}>
-        <Content style={{ margin: "20px 50px" }}>
-          <blockquote data-layer="alert">ACCESS DENIED</blockquote>
-        </Content>
-      </Arwes>
-    )
+    return <Redirect to="/signIn" />
   }
 
   componentDidMount() {
     const getUserId = this.props.match.params.userId
-    console.log("%c getUserId", "background: red", getUserId)
+    this.props.getUserInformation(getUserId)
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   const getUserId = this.props.match.params.userId
+  //   const newId = nextProps.match.params.userId
+  //   if (getUserId !== newId) {
+  //     this.props.getUserInformation(newId)
+  //   }
+  // }
 
   render() {
     const { user } = this.props
-    console.log("%c user", "background: red", user)
     const safeUser = {
-      loaded: {
+      loadedUser: {
         user: {
           name: "",
           email: ""
         },
-        ...user.loaded
+        ...user.loadedUser
       }
     }
 
     console.log("%c safeUser", "background: red", safeUser)
-    const getName = safeUser.loaded.user.name
-    const getEmail = safeUser.loaded.user.email
+    const getName = safeUser.loadedUser.name
+    const getEmail = safeUser.loadedUser.email
 
     if (!this.isAuthenticated) {
       return this.notAuthorized()
@@ -53,24 +61,38 @@ class Profile extends Component {
     console.log("%c user", "background: red", user)
     return (
       <Arwes>
-        <div style={{ margin: '100px', marginLeft: this.props.isExpanded ? "250px" : "100px" }}>
-        <Project animate header="Profile">
-          {anim => (
-            <div><Words animate show={anim.entered}>
-              {getName}
-              </Words>
+        <div
+          style={{
+            margin: "100px",
+            marginLeft: this.props.isExpanded ? "250px" : "100px"
+          }}
+        >
+          <Project animate header="Profile">
+            {anim => (
               <div>
                 <Words animate show={anim.entered}>
-                  {getEmail}
+                  {getName}
                 </Words>
+                <div>
+                  <Words animate show={anim.entered}>
+                    {getEmail}
+                  </Words>
+                  <br />
+                  <Button
+                    animate
+                    layer="success"
+                    onClick={() =>
+                      console.log(this.props.history.push("/homepage"))
+                    }
+                  >
+                    <i className="mdi mdi-chemical-weapon" /> BACK TO HOME
+                  </Button>
+                </div>
               </div>
-
-            </div>
-          )}
-        </Project>
+            )}
+          </Project>
         </div>
       </Arwes>
-
     )
   }
 }
@@ -81,4 +103,7 @@ const mapState = state => {
   }
 }
 
-export default connect(mapState)(Profile)
+export default connect(
+  mapState,
+  { checkIsAuthenticated, getUserInformation }
+)(Profile)
