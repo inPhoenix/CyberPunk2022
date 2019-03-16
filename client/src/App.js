@@ -5,6 +5,7 @@ import { connect, Provider } from "react-redux"
 import { configureStore } from "./store/configureStore"
 import { ThemeProvider, createTheme } from 'arwes';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
+import '@fortawesome/fontawesome-free/css/all.css';
 import './style.scss'
 
 const store = configureStore()

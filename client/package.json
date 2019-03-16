@@ -37,6 +37,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.7.2",
     "prettier": "^1.16.4"
   }
 }

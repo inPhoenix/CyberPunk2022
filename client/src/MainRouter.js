@@ -10,6 +10,7 @@ import { signOut } from "./components/user/redux/reducers"
 import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav"
 import Profile from "./components/user/Profile"
 import get from "lodash.get"
+import Users from "./components/user/Users"
 
 const PATH = process.env.NODE_ENV === "production" ? "/" : "/"
 
@@ -52,7 +53,6 @@ const renderProfile = user => {
 
 const renderHomepage = user => {
   if (!user.loaded.token) {
-    console.log("%c user", "background: red", user.loaded.token)
     return
   }
 
@@ -63,6 +63,23 @@ const renderHomepage = user => {
       </NavIcon>
       <NavText>
         <div className="link-color">Home</div>
+      </NavText>
+    </NavItem>
+  )
+}
+
+const renderUsers = user => {
+  if (!user.loaded.token) {
+    return
+  }
+
+  return (
+    <NavItem eventKey="homepage">
+      <NavIcon>
+        <i className="icon-color fa fa-users" style={{ fontSize: "1.50em" }} />
+      </NavIcon>
+      <NavText>
+        <div className="link-color">Users</div>
       </NavText>
     </NavItem>
   )
@@ -139,6 +156,7 @@ const MainRouter = ({ signOut, user }) => {
                   )}
                   {renderHomepage(user)}
                   {renderProfile(user)}
+                  {renderUsers(user)}
                   {renderLogout(user, signOut)}
                 </SideNav.Nav>
               </SideNav>
@@ -165,6 +183,10 @@ const MainRouter = ({ signOut, user }) => {
                 <Route
                   path={`${PATH}user/:userId`}
                   render={props => <Profile isExpanded={expanded} {...props} />}
+                />
+                <Route
+                  path={`${PATH}users`}
+                  render={props => <Users isExpanded={expanded} {...props} />}
                 />
                 <Route
                   path={`${PATH}`}
