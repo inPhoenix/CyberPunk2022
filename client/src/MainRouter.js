@@ -68,8 +68,8 @@ const renderHomepage = user => {
   )
 }
 
-const renderUsers = user => {
-  if (!user.loaded.token) {
+const renderUsers = (user) => {
+  if (!user) {
     return
   }
 
@@ -105,6 +105,7 @@ const MainRouter = ({ signOut, user }) => {
                 className="sidebar-nav"
                 onSelect={selected => {
                   const to = "/" + selected
+                  console.log('%c selected', 'background: red', selected)
                   if (selected === "profile") {
                     return history.push(`user/${getUserId}`)
                   }

@@ -30,6 +30,7 @@ export const userReducer = (state = INITIAL_STATE, action = {}) => {
         isAuth: action.payload
       }
     case LOADED_USER:
+      console.log("%c action.payload", "background: red", action.payload)
       return {
         ...state,
         loadedUser: action.payload
@@ -174,6 +175,7 @@ export const checkIsAuthenticated = (values = {}) => {
 export const loadedUser = user => {
   return { type: LOADED_USER, payload: user }
 }
+
 export const loadedUsers = users => {
   return { type: LOADED_USERS, payload: users }
 }
