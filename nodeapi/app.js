@@ -51,9 +51,6 @@ app.get('/docs', (req,res) => {
   })
 })
 
-
-console.log('process.env.NODE_ENV::::::::::::', process.env.NODE_ENV)
-
 const origin = process.env.NODE_ENV === 'production' ?
   'https://cybersocial.herokuapp.com' :
   'http://localhost:3000';

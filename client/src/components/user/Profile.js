@@ -78,6 +78,25 @@ class Profile extends Component {
                     {getEmail}
                   </Words>
                   <br />
+                  <div style={{ marginTop: '30px' }}></div>
+                  <Button
+                    animate
+                    layer="success"
+                    onClick={() =>
+                      console.log(this.props.history.push("/homepage"))
+                    }
+                  >
+                    <i className="mdi mdi-chemical-weapon" /> EDIT PROFILE
+                  </Button>
+                  <Button
+                    animate
+                    layer="success"
+                    onClick={() =>
+                      console.log(this.props.history.push("/homepage"))
+                    }
+                  >
+                    <i className="mdi mdi-chemical-weapon" /> BACK TO HOME
+                  </Button>
                   <Button
                     animate
                     layer="success"
