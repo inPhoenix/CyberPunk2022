@@ -24,7 +24,7 @@ export const userReducer = (state = INITIAL_STATE, action = {}) => {
         ...state,
         isAuth: action.payload
       }
-      case LOADED_USER:
+    case LOADED_USER:
       return {
         ...state,
         loadedUser: action.payload
@@ -161,18 +161,19 @@ export const checkIsAuthenticated = (values = {}) => {
   }
 }
 
-export const loadedUser = (user) => {
-  return {type: LOADED_USER, payload: user }
+export const loadedUser = user => {
+  return { type: LOADED_USER, payload: user }
 }
 
-export const getUserInformation = (userId) => {
-  const getToken = JSON.parse(localStorage.getItem("jwt")).token
-  cyberpunk.defaults.headers.common = {'Authorization': `bearer ${getToken}`}
+export const getUserInformation = userId => {
+  const getToken1 = JSON.parse(localStorage.getItem("jwt"))
+  const getToken = (getToken1 && getToken1.token) || "noToken"
+
+  cyberpunk.defaults.headers.common = { Authorization: `bearer ${getToken}` }
 
   return async dispatch => {
     const response = await cyberpunk.get(`/user/${userId}`)
     dispatch(loadedUser(response.data))
-
   }
 }
 
@@ -184,15 +185,9 @@ export const isAuthenticated = token => {
 export const isAuthenticatedPure = () => {
   return { type: AUTH, payload: JSON.parse(localStorage.getItem("jwt")) }
   if (window == null) {
-    console.log("%c nowindow", "background: blue")
     return false
   }
   if (localStorage.getItem("jwt")) {
-    console.log(
-      "%c json",
-      "background: yellow",
-      JSON.parse(localStorage.getItem("jwt"))
-    )
     return { type: AUTH, payload: JSON.parse(localStorage.getItem("jwt")) }
   } else {
     return false

@@ -51,8 +51,7 @@ class Profile extends Component {
     const { user } = this.props
     const loggedUser = get(user, "loaded.user._id")
     const profileUser = get(user, "loadedUser._id")
-
-    if (loggedUser === profileUser) {
+    if (loggedUser != null && loggedUser === profileUser) {
       return true
     }
     return false
@@ -61,6 +60,7 @@ class Profile extends Component {
   render() {
     const { user } = this.props
     const isCurrentUser = this.hasPermission()
+
     const safeUser = {
       loadedUser: {
         user: {
@@ -78,7 +78,6 @@ class Profile extends Component {
       //return this.notAuthorized()
     }
 
-    console.log("%c user", "background: red", user)
     return (
       <Arwes>
         <div
