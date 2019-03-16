@@ -1,6 +1,11 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Arwes, Button, Content, Project, Words } from "arwes"
+import { Arwes, Button, Project, Words } from "arwes"
+import Icon from "@mdi/react"
+import { mdiChemicalWeapon, mdiRobot } from "@mdi/js"
+import styled from "styled-components"
+import get from "lodash.get"
+
 import {
   checkIsAuthenticated,
   isAuthenticated,
@@ -8,6 +13,11 @@ import {
 } from "./redux/reducers"
 import { Redirect } from "react-router-dom"
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
+
+const ButtonBar = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`
 
 class Profile extends Component {
   state = {
@@ -19,7 +29,6 @@ class Profile extends Component {
     const { user } = this.props
     return !!user.loaded.token
   }
-
 
   notAuthorized() {
     return <Redirect to="/signIn" />
@@ -38,8 +47,20 @@ class Profile extends Component {
   //   }
   // }
 
+  hasPermission = () => {
+    const { user } = this.props
+    const loggedUser = get(user, "loaded.user._id")
+    const profileUser = get(user, "loadedUser._id")
+
+    if (loggedUser === profileUser) {
+      return true
+    }
+    return false
+  }
+
   render() {
     const { user } = this.props
+    const isCurrentUser = this.hasPermission()
     const safeUser = {
       loadedUser: {
         user: {
@@ -50,12 +71,11 @@ class Profile extends Component {
       }
     }
 
-    console.log("%c safeUser", "background: red", safeUser)
     const getName = safeUser.loadedUser.name
     const getEmail = safeUser.loadedUser.email
 
     if (!this.isAuthenticated) {
-      return this.notAuthorized()
+      //return this.notAuthorized()
     }
 
     console.log("%c user", "background: red", user)
@@ -78,34 +98,47 @@ class Profile extends Component {
                     {getEmail}
                   </Words>
                   <br />
-                  <div style={{ marginTop: '30px' }}></div>
-                  <Button
-                    animate
-                    layer="success"
-                    onClick={() =>
-                      console.log(this.props.history.push("/homepage"))
-                    }
-                  >
-                    <i className="mdi mdi-chemical-weapon" /> EDIT PROFILE
-                  </Button>
-                  <Button
-                    animate
-                    layer="success"
-                    onClick={() =>
-                      console.log(this.props.history.push("/homepage"))
-                    }
-                  >
-                    <i className="mdi mdi-chemical-weapon" /> BACK TO HOME
-                  </Button>
-                  <Button
-                    animate
-                    layer="success"
-                    onClick={() =>
-                      console.log(this.props.history.push("/homepage"))
-                    }
-                  >
-                    <i className="mdi mdi-chemical-weapon" /> BACK TO HOME
-                  </Button>
+                  <div style={{ marginTop: "30px" }} />
+
+                  {isCurrentUser && (
+                    <ButtonBar>
+                      <Button
+                        animate
+                        layer="success"
+                        onClick={() =>
+                          console.log(this.props.history.push("/homepage"))
+                        }
+                      >
+                        <Icon
+                          path={mdiChemicalWeapon}
+                          size={0.5}
+                          color="green"
+                          spin
+                        />{" "}
+                        EDIT PROFILE
+                      </Button>
+                      <Button
+                        animate
+                        layer="alert"
+                        onClick={() =>
+                          console.log(this.props.history.push("/homepage"))
+                        }
+                      >
+                        <Icon path={mdiRobot} size={0.5} color="red" /> BACK
+                        TO HOME
+                      </Button>
+                      <Button
+                        animate
+                        layer="success"
+                        onClick={() =>
+                          console.log(this.props.history.push("/homepage"))
+                        }
+                      >
+                        <i className="mdi mdi-chemical-weapon" /> BACK TO
+                        HOME
+                      </Button>
+                    </ButtonBar>
+                  )}
                 </div>
               </div>
             )}

@@ -102,7 +102,7 @@ const MainRouter = ({ signOut, user }) => {
               <SideNav
                 onToggle={() => clickedTest()}
                 componentClass="div"
-                className="phoenix"
+                className="sidebar-nav"
                 onSelect={selected => {
                   const to = "/" + selected
                   if (selected === "profile") {

@@ -4,6 +4,8 @@
   "private": true,
   "homepage": "https://cybersocial.herokuapp.com/",
   "dependencies": {
+    "@mdi/js": "^3.5.95",
+    "@mdi/react": "^1.1.0",
     "@trendmicro/react-sidenav": "^0.4.5",
     "arwes": "^1.0.0-alpha.5",
     "axios": "^0.18.0",
