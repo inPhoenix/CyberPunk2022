@@ -9,7 +9,7 @@ import Homepage from "./components/homepage/Homepage"
 import { signOut } from "./components/user/redux/reducers"
 import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav"
 import Profile from "./components/user/Profile"
-import { get } from "lodash"
+import get from "lodash.get"
 
 const PATH = process.env.NODE_ENV === "production" ? "/" : "/"
 
