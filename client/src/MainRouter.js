@@ -74,7 +74,7 @@ const renderUsers = user => {
   }
 
   return (
-    <NavItem eventKey="homepage">
+    <NavItem eventKey="users">
       <NavIcon>
         <i className="icon-color fa fa-users" style={{ fontSize: "1.50em" }} />
       </NavIcon>
