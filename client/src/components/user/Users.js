@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import { getUsers } from "./redux/reducers"
 import { Arwes, Blockquote, Button, Image } from "arwes"
-import Icon from "./Profile"
+import Icon from "@mdi/react"
 import { mdiChemicalWeapon } from "@mdi/js"
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
 
@@ -27,6 +27,7 @@ class Users extends Component {
         >
           {user.loadedUsers.length &&
             user.loadedUsers.map(user => {
+              console.log('%c user', 'background: blue', user)
               return (
                 <div>
                   <div style={{ width: '200px' }}>
