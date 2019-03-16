@@ -8,7 +8,7 @@
     "server": "NODE_ENV=production node app.js"
   },
   "engines": {
-    "node": "11.1.0"
+    "node": ">=11.1.0"
   },
   "author": "",
   "license": "ISC",

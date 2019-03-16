@@ -13,7 +13,7 @@
     "heroku-prebuild": "npm install --prefix nodeapi"
   },
   "engines": {
-    "node": "11.1.0"
+    "node": ">=11.1.0"
   },
   "author": "",
   "license": "ISC",
