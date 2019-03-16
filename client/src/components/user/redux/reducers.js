@@ -9,10 +9,15 @@ const ERROR = "cyberpunk-media/ERROR"
 const ISLOADING = "cyberpunk-media/ISLOADING"
 const AUTH = "cyberpunk-media/AUTH"
 const LOADED_USER = "cyberpunk-media/LOADED_USER"
+const LOADED_USERS = "cyberpunk-media/LOADED_USERS"
 
 const INITIAL_STATE = {
   isSignedIn: null,
   loaded: {},
+  loadedUsers: {
+    users: {}
+  },
+  loadedUser: {},
   isError: false
 }
 
@@ -28,6 +33,11 @@ export const userReducer = (state = INITIAL_STATE, action = {}) => {
       return {
         ...state,
         loadedUser: action.payload
+      }
+    case LOADED_USERS:
+      return {
+        ...state,
+        loadedUsers: action.payload
       }
     case SIGNUP:
       return {
@@ -162,7 +172,10 @@ export const checkIsAuthenticated = (values = {}) => {
 }
 
 export const loadedUser = user => {
-  return { type: LOADED_USER, payload: user }
+  return { type: LOADED_USERS, payload: user }
+}
+export const loadedUsers = users => {
+  return { type: LOADED_USERS, payload: users }
 }
 
 export const getUserInformation = userId => {
@@ -174,6 +187,18 @@ export const getUserInformation = userId => {
   return async dispatch => {
     const response = await cyberpunk.get(`/user/${userId}`)
     dispatch(loadedUser(response.data))
+  }
+}
+
+export const getUsers = userId => {
+  const getToken1 = JSON.parse(localStorage.getItem("jwt"))
+  const getToken = (getToken1 && getToken1.token) || "noToken"
+
+  cyberpunk.defaults.headers.common = { Authorization: `bearer ${getToken}` }
+
+  return async dispatch => {
+    const response = await cyberpunk.get(`/users/`)
+    dispatch(loadedUsers(response.data))
   }
 }
 
