@@ -17,7 +17,7 @@ const Right = styled.div`
 class Home extends Component {
   render() {
     return (
-      <Arwes animate background={`${ASSETS}/image.png`} pattern={`${ASSETS}/test.png`}>
+      <Arwes animate background={`${ASSETS}/image.png`} pattern={`${ASSETS}/window.png`}>
         <MarginTop />
         <Right>
           <FrameC animate level={2} corners={1} layer={"success"}>

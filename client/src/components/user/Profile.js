@@ -35,7 +35,11 @@ class Profile extends Component {
   }
 
   componentDidMount() {
+    // const { match } = this.props
+    // const getUserId = get(match, 'match.params.userId')
     const getUserId = this.props.match.params.userId
+
+    console.log('%c getUserId', 'background: red', getUserId)
     this.props.getUserInformation(getUserId)
   }
 
@@ -59,6 +63,7 @@ class Profile extends Component {
 
   render() {
     const { user } = this.props
+    console.log('%c user', 'background: red', user)
     const isCurrentUser = this.hasPermission()
 
     const safeUser = {
