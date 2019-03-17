@@ -71,7 +71,7 @@ const form = reduxForm({ form: FORM_NAME })(SignIn)
 const selector = formValueSelector(FORM_NAME)
 
 const initialValues = {
-  email: 'defaultUser@gmail.com',
+  email: 'guest@guest.com',
   password: 'default123'
 }
 const mapStateToProps = state => {

@@ -10,10 +10,12 @@ const ISLOADING = "cyberpunk-media/ISLOADING"
 const AUTH = "cyberpunk-media/AUTH"
 const LOADED_USER = "cyberpunk-media/LOADED_USER"
 const LOADED_USERS = "cyberpunk-media/LOADED_USERS"
+const DELETE_USER = "cyberpunk-media/DELETE_USER"
 
 const INITIAL_STATE = {
   isSignedIn: null,
   loaded: {},
+  deletedUser: false,
   loadedUsers: {
     users: {}
   },
@@ -27,22 +29,32 @@ export const userReducer = (state = INITIAL_STATE, action = {}) => {
     case AUTH:
       return {
         ...state,
+        deletedUser: false,
         isAuth: action.payload
       }
     case LOADED_USER:
       return {
         ...state,
+        deletedUser: false,
         loadedUser: action.payload
       }
+    case DELETE_USER:
+      return {
+        ...state,
+        deletedUser: true
+      }
+
     case LOADED_USERS:
       return {
         ...state,
+        deletedUser: false,
         loadedUsers: action.payload
       }
     case SIGNUP:
       return {
         ...state,
         isError: false,
+        deletedUser: false,
         loaded: action.payload
       }
     case ERROR:
@@ -201,6 +213,23 @@ export const getUsers = userId => {
     const response = await cyberpunk.get(`/users/`)
     dispatch(loadedUsers(response.data))
   }
+}
+
+
+export const deleteUser = userId => {
+  const getToken1 = JSON.parse(localStorage.getItem("jwt"))
+  const getToken = (getToken1 && getToken1.token) || "noToken"
+
+  cyberpunk.defaults.headers.common = { Authorization: `bearer ${getToken}` }
+
+  return async dispatch => {
+    const response = await cyberpunk.delete(`/user/${userId}`)
+    dispatch(deleteUserEvent(response.data))
+  }
+}
+
+export const deleteUserEvent = user => {
+  return { type: DELETE_USER, payload: user }
 }
 
 export const isAuthenticated = token => {

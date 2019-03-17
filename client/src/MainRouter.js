@@ -11,6 +11,7 @@ import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav"
 import Profile from "./components/user/Profile"
 import get from "lodash.get"
 import Users from "./components/user/Users"
+import DeleteUser from "./components/user/DeleteUser"
 
 const PATH = process.env.NODE_ENV === "production" ? "/" : "/"
 
@@ -69,7 +70,7 @@ const renderHomepage = user => {
 }
 
 const renderUsers = user => {
-  if (!user) {
+  if (!user.loaded.token) {
     return
   }
 
@@ -187,6 +188,12 @@ const MainRouter = ({ signOut, user }) => {
                 <Route
                   path={`${PATH}users`}
                   render={props => <Users isExpanded={expanded} {...props} />}
+                />
+                <Route
+                  path={`${PATH}deleteUser/:userId`}
+                  render={props => (
+                    <DeleteUser isExpanded={expanded} {...props} />
+                  )}
                 />
                 <Route
                   path={`${PATH}`}

@@ -65,6 +65,9 @@ class Profile extends Component {
     const { user } = this.props
     const isCurrentUser = this.hasPermission()
 
+    const isProduction = process.env.NODE_ENV === 'production'
+    const enableDelete = !isProduction
+
     const safeUser = {
       loadedUser: {
         user: {
@@ -77,6 +80,7 @@ class Profile extends Component {
 
     const getName = safeUser.loadedUser.name
     const getEmail = safeUser.loadedUser.email
+    const getId = safeUser.loadedUser._id
 
     if (!this.isAuthenticated) {
       //return this.notAuthorized()
@@ -98,55 +102,55 @@ class Profile extends Component {
                 </div>
 
                 <div>
-                <Words animate show={anim.entered}>
-                  {getName}
-                </Words>
-                <div>
                   <Words animate show={anim.entered}>
-                    {getEmail}
+                    {getName}
                   </Words>
-                  <br />
-                  <div style={{ marginTop: "30px" }} />
+                  <div>
+                    <Words animate show={anim.entered}>
+                      {getEmail}
+                    </Words>
+                    <br />
+                    <div style={{ marginTop: "30px" }} />
 
-                  {isCurrentUser && (
-                    <ButtonBar>
-                      <Button
-                        animate
-                        layer="success"
-                        onClick={() =>
-                          console.log(this.props.history.push("/homepage"))
-                        }
-                      >
-                        <Icon
-                          path={mdiChemicalWeapon}
-                          size={0.5}
-                          color="green"
-                          spin
-                        />{" "}
-                        EDIT PROFILE
-                      </Button>
-                      <Button
-                        animate
-                        layer="alert"
-                        onClick={() =>
-                          console.log(this.props.history.push("/homepage"))
-                        }
-                      >
-                        <Icon path={mdiRobot} size={0.5} color="red" /> BACK TO
-                        HOME
-                      </Button>
-                      <Button
-                        animate
-                        layer="success"
-                        onClick={() =>
-                          console.log(this.props.history.push("/homepage"))
-                        }
-                      >
-                        <i className="mdi mdi-chemical-weapon" /> BACK TO HOME
-                      </Button>
-                    </ButtonBar>
-                  )}
-                </div>
+                    {(isCurrentUser || enableDelete) && (
+                      <ButtonBar>
+                        <Button
+                          animate
+                          layer="success"
+                          onClick={() =>
+                            console.log(this.props.history.push("/homepage"))
+                          }
+                        >
+                          <Icon
+                            path={mdiChemicalWeapon}
+                            size={0.5}
+                            color="green"
+                            spin
+                          />{" "}
+                          EDIT PROFILE
+                        </Button>
+                        <Button
+                          animate
+                          layer="alert"
+                          onClick={() =>
+                            this.props.history.push(`/deleteUser/${getId}`)
+                          }
+                        >
+                          <Icon path={mdiRobot} size={0.5} color="red" /> DELETE
+                          USER
+                        </Button>
+                        <Button
+                          animate
+                          layer="alert"
+                          // onClick={() =>
+                          //   this.props.history.push(`/deleteUser/${getId}`)
+                          // }
+                        >
+                          <i className="mdi mdi-chemical-weapon" /> BACK TO HOME
+                        </Button>
+                      </ButtonBar>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
