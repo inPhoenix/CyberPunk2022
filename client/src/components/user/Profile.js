@@ -118,7 +118,7 @@ class Profile extends Component {
                           animate
                           layer="success"
                           onClick={() =>
-                            console.log(this.props.history.push("/homepage"))
+                            this.props.history.push(`/editUser/${getId}`)
                           }
                         >
                           <Icon

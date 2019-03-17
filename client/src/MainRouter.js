@@ -12,6 +12,7 @@ import Profile from "./components/user/Profile"
 import get from "lodash.get"
 import Users from "./components/user/Users"
 import DeleteUser from "./components/user/DeleteUser"
+import EditProfile from "./components/user/EditProfile"
 
 const PATH = process.env.NODE_ENV === "production" ? "/" : "/"
 
@@ -193,6 +194,12 @@ const MainRouter = ({ signOut, user }) => {
                   path={`${PATH}deleteUser/:userId`}
                   render={props => (
                     <DeleteUser isExpanded={expanded} {...props} />
+                  )}
+                />
+                <Route
+                  path={`${PATH}editUser/:userId`}
+                  render={props => (
+                    <EditProfile isExpanded={expanded} {...props} />
                   )}
                 />
                 <Route

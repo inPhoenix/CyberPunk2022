@@ -49,12 +49,10 @@ class DeleteUser extends Component {
 
   render() {
     const { isExpanded, user } = this.props
-    console.log('%c user.deletedUser', 'background: red', user.deletedUser)
     if(user.deletedUser) {
       return <Redirect to="/signIn" />
     }
     const getName = get(user, "loadedUser.name")
-    console.log("%c getName", "background: red", getName)
     return (
       <Arwes>
         <div style={{ padding: 20 }}>
