@@ -31,12 +31,12 @@ class DeleteUser extends Component {
 
   handleDelete = () => {
     const {user} = this.props
-    console.log('%c delete', 'background: red')
     const getId = get(user, "loadedUser._id")
     const getName = get(user, "loadedUser.name")
-    console.log('%c getName', 'background: red', getName)
     if(getName !== 'guest') {
     this.props.deleteUser(getId)
+    this.props.signOut()
+
 
     } else {
       this.setState({
@@ -51,7 +51,6 @@ class DeleteUser extends Component {
     const { isExpanded, user } = this.props
     console.log('%c user.deletedUser', 'background: red', user.deletedUser)
     if(user.deletedUser) {
-      this.props.signOut()
       return <Redirect to="/signIn" />
     }
     const getName = get(user, "loadedUser.name")
