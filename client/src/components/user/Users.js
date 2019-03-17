@@ -13,8 +13,6 @@ class Users extends Component {
 
   render() {
     const { user } = this.props
-    console.log("%c user", "background: red", user)
-
     return (
       <Arwes>
         <div
@@ -27,7 +25,6 @@ class Users extends Component {
         >
           {user.loadedUsers.length &&
             user.loadedUsers.map(user => {
-              console.log('%c user', 'background: blue', user)
               return (
                 <div>
                   <div style={{ width: '200px' }}>
@@ -42,7 +39,7 @@ class Users extends Component {
                         animate
                         layer="success"
                         onClick={() =>
-                          console.log('bo')
+                          this.props.history.push(`user/${user._id}`)
                         }
                       >
                         <Icon

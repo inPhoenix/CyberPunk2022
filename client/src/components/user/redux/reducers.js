@@ -30,7 +30,6 @@ export const userReducer = (state = INITIAL_STATE, action = {}) => {
         isAuth: action.payload
       }
     case LOADED_USER:
-      console.log("%c action.payload", "background: red", action.payload)
       return {
         ...state,
         loadedUser: action.payload
@@ -66,7 +65,7 @@ export const signUp = (values = {}) => {
   return async dispatch => {
     let [err, response] = await to(cyberpunk.post("/signup", values))
     if (err) {
-      console.log("%c err", "background: red", err)
+      console.error("%c err", "background: red", err)
       const safeError = {
         response: {
           data: {},
@@ -115,7 +114,7 @@ export const signIn = (values = {}) => {
     let [err, response] = await to(cyberpunk.post("/signin", values))
 
     if (err) {
-      console.log("%c err", "background: red", err)
+      console.error("%c err", "background: red", err)
       const safeError = {
         response: {
           data: "error",
@@ -153,7 +152,7 @@ export const errorHandling = () => {
 }
 
 const errorLog = error => {
-  console.log("%c Error: ", "background: red; color: yellow", error)
+  console.error("%c Error: ", "background: red; color: yellow", error)
 }
 
 //utility function to catch errors

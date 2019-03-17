@@ -1,17 +1,17 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Arwes, Button, Project, Words } from "arwes"
+import { Arwes, Button, Project, Words, Image } from "arwes"
 import Icon from "@mdi/react"
 import { mdiChemicalWeapon, mdiRobot } from "@mdi/js"
 import styled from "styled-components"
 import get from "lodash.get"
-
 import {
   checkIsAuthenticated,
   isAuthenticated,
   getUserInformation
 } from "./redux/reducers"
 import { Redirect } from "react-router-dom"
+
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
 
 const ButtonBar = styled.div`
@@ -39,17 +39,17 @@ class Profile extends Component {
     // const getUserId = get(match, 'match.params.userId')
     const getUserId = this.props.match.params.userId
 
-    console.log('%c getUserId', 'background: red', getUserId)
     this.props.getUserInformation(getUserId)
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   const getUserId = this.props.match.params.userId
-  //   const newId = nextProps.match.params.userId
-  //   if (getUserId !== newId) {
-  //     this.props.getUserInformation(newId)
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    const getUserId = this.props.match.params.userId
+    const newId = nextProps.match.params.userId
+
+    if (getUserId !== newId) {
+      this.props.getUserInformation(newId)
+    }
+  }
 
   hasPermission = () => {
     const { user } = this.props
@@ -63,7 +63,6 @@ class Profile extends Component {
 
   render() {
     const { user } = this.props
-    console.log('%c user', 'background: red', user)
     const isCurrentUser = this.hasPermission()
 
     const safeUser = {
@@ -93,7 +92,12 @@ class Profile extends Component {
         >
           <Project animate header="Profile">
             {anim => (
-              <div>
+              <div style={{ display: "flex" }}>
+                <div style={{ display: "", padding: 20, maxWidth: 130 }}>
+                  <Image animate resources={`${ASSETS}/avatarm.png`} />
+                </div>
+
+                <div>
                 <Words animate show={anim.entered}>
                   {getName}
                 </Words>
@@ -128,8 +132,8 @@ class Profile extends Component {
                           console.log(this.props.history.push("/homepage"))
                         }
                       >
-                        <Icon path={mdiRobot} size={0.5} color="red" /> BACK
-                        TO HOME
+                        <Icon path={mdiRobot} size={0.5} color="red" /> BACK TO
+                        HOME
                       </Button>
                       <Button
                         animate
@@ -138,11 +142,11 @@ class Profile extends Component {
                           console.log(this.props.history.push("/homepage"))
                         }
                       >
-                        <i className="mdi mdi-chemical-weapon" /> BACK TO
-                        HOME
+                        <i className="mdi mdi-chemical-weapon" /> BACK TO HOME
                       </Button>
                     </ButtonBar>
                   )}
+                </div>
                 </div>
               </div>
             )}
