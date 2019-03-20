@@ -201,6 +201,8 @@ const MainRouter = ({ signOut, user }) => {
                 <PrivateRoute
                   path={`${PATH}editUser/:userId`}
                   component={EditProfile}
+                  isExpanded={expanded}
+
                 />
                 <Route
                   path={`${PATH}`}

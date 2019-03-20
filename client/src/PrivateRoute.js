@@ -13,7 +13,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
       {...rest}
       render={props =>
         isAuth ? (
-          <Component {...props} />
+          <Component {...props} isExpanded={rest.isExpanded} />
         ) : (
           <div>
             <Arwes>
