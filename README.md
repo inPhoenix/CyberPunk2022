@@ -17,3 +17,8 @@ run locally:
 # Heroku debug
 
 heroku logs --tail
+
+Improvements:
+
+    Add validation on user edit
+    Add strategy: https://reacttraining.com/react-router/web/example/auth-workflow

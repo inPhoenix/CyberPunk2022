@@ -13,6 +13,7 @@ import get from "lodash.get"
 import Users from "./components/user/Users"
 import DeleteUser from "./components/user/DeleteUser"
 import EditProfile from "./components/user/EditProfile"
+import PrivateRoute from "./PrivateRoute"
 
 const PATH = process.env.NODE_ENV === "production" ? "/" : "/"
 
@@ -94,7 +95,7 @@ const MainRouter = ({ signOut, user }) => {
 
   const getUserId = get(user, "loaded.user._id")
   const isLoggedIn = user.loaded.token
-  console.log('%c isLoggedIn', 'background: red', isLoggedIn)
+  console.log("%c isLoggedIn", "background: red", isLoggedIn)
   const [expanded, setExpanded] = useState(false)
   return (
     <div>
@@ -197,11 +198,9 @@ const MainRouter = ({ signOut, user }) => {
                     <DeleteUser isExpanded={expanded} {...props} />
                   )}
                 />
-                <Route
+                <PrivateRoute
                   path={`${PATH}editUser/:userId`}
-                  render={props => (
-                    <EditProfile isExpanded={expanded} {...props} />
-                  )}
+                  component={EditProfile}
                 />
                 <Route
                   path={`${PATH}`}
