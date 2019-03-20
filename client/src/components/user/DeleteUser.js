@@ -8,6 +8,8 @@ import get from "lodash.get"
 import { deleteUser, signOut } from "./redux/reducers"
 import { Redirect } from "react-router-dom"
 
+const GUEST_ID = '5c92b9bf934bf41012beb524'
+
 const ButtonBar = styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -33,7 +35,7 @@ class DeleteUser extends Component {
     const {user} = this.props
     const getId = get(user, "loadedUser._id")
     const getName = get(user, "loadedUser.name")
-    if(getName !== 'guest') {
+    if(getId !== GUEST_ID) {
     this.props.deleteUser(getId)
     this.props.signOut()
 

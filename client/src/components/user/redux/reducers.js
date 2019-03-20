@@ -189,8 +189,6 @@ export const updateUser = data => {
   return { type: SIGNUP, payload: data }
 }
 export const updateEditUser = data => {
-  console.log('%c I will not see the token', 'background: red')
-  console.log('%c data', 'background: red', data)
   return { type: UPDATE, payload: data }
 }
 
