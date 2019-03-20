@@ -94,6 +94,7 @@ const MainRouter = ({ signOut, user }) => {
 
   const getUserId = get(user, "loaded.user._id")
   const isLoggedIn = user.loaded.token
+  console.log('%c isLoggedIn', 'background: red', isLoggedIn)
   const [expanded, setExpanded] = useState(false)
   return (
     <div>

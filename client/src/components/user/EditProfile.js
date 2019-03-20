@@ -8,7 +8,7 @@ import get from "lodash.get"
 import {
   checkIsAuthenticated,
   isAuthenticated,
-  getUserInformation
+  getUserInformation, editUserProfile
 } from "./redux/reducers"
 import { Redirect } from "react-router-dom"
 import { Field, formValueSelector, getFormValues, reduxForm } from "redux-form"
@@ -79,13 +79,18 @@ class EditProfile extends Component {
   }
 
   onSubmit = (values) => {
-    console.log("%c onSubmit", "background: white; color: blue", values)
+    const { user } = this.props
+    const getUserId = get(user, "loadedUser._id")
+    this.props.editUserProfile(values, getUserId)
+
+
   }
 
   render() {
     const { user, isExpanded, handleSubmit } = this.props
     const getName = get(user, "loadedUser.name")
     const getEmail = get(user, "loadedUser.email")
+    const getUserId = get(user, "loadedUser._id")
 
     if (!this.isAuthenticated) {
       //return this.notAuthorized()
@@ -221,7 +226,6 @@ class EditProfile extends Component {
                 <Button
                   animate
                   layer="success"
-                  //onClick={this.enableEditName}
                 >
                   <Icon
                     path={mdiChemicalWeapon}
@@ -265,5 +269,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { checkIsAuthenticated, getUserInformation }
+  { checkIsAuthenticated, getUserInformation, editUserProfile }
 )(form)

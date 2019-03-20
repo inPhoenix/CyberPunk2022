@@ -5,6 +5,7 @@ import history from "../../../history"
 
 // Actions
 const SIGNUP = "cyberpunk-media/SIGNUP"
+const UPDATE = "cyberpunk-media/UPDATE"
 const ERROR = "cyberpunk-media/ERROR"
 const ISLOADING = "cyberpunk-media/ISLOADING"
 const AUTH = "cyberpunk-media/AUTH"
@@ -57,6 +58,14 @@ export const userReducer = (state = INITIAL_STATE, action = {}) => {
         deletedUser: false,
         loaded: action.payload
       }
+
+    case UPDATE:
+      return {
+        ...state,
+        isError: false,
+        deletedUser: false,
+        loadedUser: action.payload.user
+      }
     case ERROR:
       return {
         ...state,
@@ -89,6 +98,27 @@ export const signUp = (values = {}) => {
     } else {
       await dispatch(updateUser(response.data))
       history.push("/")
+    }
+  }
+}
+
+export const editUserProfile = (values = {}, userId) => {
+  const END_POINT = `/user/${userId}`
+  return async dispatch => {
+    let [err, response] = await to(cyberpunk.put(END_POINT, values))
+    if (err) {
+      console.error("%c err", "background: red", err)
+      const safeError = {
+        response: {
+          data: {},
+          ...err
+        }
+      }
+      errorLog(safeError.response.data)
+      await dispatch(errorHandling())
+    } else {
+      await dispatch(updateEditUser(response.data))
+      //history.push("/")
     }
   }
 }
@@ -157,6 +187,11 @@ const setLoading = state => {
 
 export const updateUser = data => {
   return { type: SIGNUP, payload: data }
+}
+export const updateEditUser = data => {
+  console.log('%c I will not see the token', 'background: red')
+  console.log('%c data', 'background: red', data)
+  return { type: UPDATE, payload: data }
 }
 
 export const errorHandling = () => {

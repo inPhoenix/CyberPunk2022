@@ -9,6 +9,11 @@
 
 https://cybersocial.herokuapp.com/
 
+run locally:
+
+    cd client: yarn start
+    cd nodeapi: yarn dev
+
 # Heroku debug
 
 heroku logs --tail
