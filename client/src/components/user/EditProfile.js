@@ -8,12 +8,14 @@ import get from "lodash.get"
 import {
   checkIsAuthenticated,
   isAuthenticated,
-  getUserInformation, editUserProfile
+  getUserInformation,
+  editUserProfile
 } from "./redux/reducers"
 import { Redirect } from "react-router-dom"
 import { Field, formValueSelector, getFormValues, reduxForm } from "redux-form"
 
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
+
 
 const Hide = styled.div`
   display: ${props => (props.enable ? "flex" : "none")};
@@ -43,7 +45,7 @@ const renderField = ({
 
 const ButtonBar = styled.div`
   display: flex;
-  justify-content: ${props => props.right ? 'flex-end' : 'space-evenly'}
+  justify-content: ${props => (props.right ? "flex-end" : "space-evenly")}
   margin-bottom: 10px;
 `
 
@@ -51,7 +53,8 @@ class EditProfile extends Component {
   state = {
     isEditName: false,
     isEditPassword: false,
-    isEditEmail: false
+    isEditEmail: false,
+    isEditPhoto: false
   }
 
   componentDidMount() {
@@ -77,13 +80,43 @@ class EditProfile extends Component {
       isEditPassword: !prev.isEditPassword
     }))
   }
+  enableEditPhoto = () => {
+    this.setState(prev => ({
+      isEditPhoto: !prev.isEditPhoto
+    }))
+  }
 
-  onSubmit = (values) => {
+  onSubmit = values => {
     const { user } = this.props
     const getUserId = get(user, "loadedUser._id")
     this.props.editUserProfile(values, getUserId)
+  }
 
-
+  renderEditPhoto = () => {
+    const type = {
+      type: "button"
+    }
+    return (
+      <FrameC show={true} animate={true} level={3} corners={4} layer="primary">
+        <div style={{ padding: "20px 40px", fontSize: "30px" }}>
+          <Hide enable={this.state.isEditPhoto}>
+            {/*https://codesandbox.io/s/z39y9mlwq4*/}
+          </Hide>
+          <Hide enable={!this.state.isEditPhoto} />
+        </div>
+        <ButtonBar>
+          <Button
+            buttonProps={type}
+            animate
+            layer="success"
+            onClick={this.enableEditPhoto}
+          >
+            <Icon path={mdiChemicalWeapon} size={0.7} color="green" spin /> Edit
+            Photo
+          </Button>
+        </ButtonBar>
+      </FrameC>
+    )
   }
 
   render() {
@@ -110,6 +143,7 @@ class EditProfile extends Component {
           >
             <Project animate header={"Edit Profile"}>
               <div style={{ display: "inline-block", padding: "20px" }}>
+                {this.renderEditPhoto()}
                 <FrameC
                   show={true}
                   animate={true}
@@ -119,11 +153,7 @@ class EditProfile extends Component {
                 >
                   <div style={{ padding: "20px 40px", fontSize: "32px" }}>
                     <Hide enable={this.state.isEditName}>
-                      <Field
-                        name="name"
-                        component={renderField}
-                        type="input"
-                      />
+                      <Field name="name" component={renderField} type="input" />
                     </Hide>
                     <Hide enable={!this.state.isEditName}>{getName}</Hide>
                   </div>
@@ -223,10 +253,7 @@ class EditProfile extends Component {
                 </FrameC>
               </div>
               <ButtonBar right>
-                <Button
-                  animate
-                  layer="success"
-                >
+                <Button animate layer="success">
                   <Icon
                     path={mdiChemicalWeapon}
                     size={0.7}
