@@ -16,6 +16,31 @@ import { Field, formValueSelector, getFormValues, reduxForm } from "redux-form"
 
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
 
+// References:
+// https://github.com/erikras/redux-form/issues/3686
+// 🔜 https://codesandbox.io/s/z39y9mlwq4
+// Example: https://ashiknesin.com/blog/upload-file-using-axios-and-redux-form/
+
+const adaptFileEventToValue = delegate => e => {
+  return delegate(e.target.files[0])
+}
+
+const FileInput = ({
+  input: { value: omitValue, onChange, onBlur, ...inputProps },
+  meta: omitMeta,
+  ...props
+}) => {
+  return (
+    <input
+      accept="image/*"
+      onChange={adaptFileEventToValue(onChange)}
+      onBlur={adaptFileEventToValue(onBlur)}
+      type="file"
+      {...props.input}
+      {...props}
+    />
+  )
+}
 
 const Hide = styled.div`
   display: ${props => (props.enable ? "flex" : "none")};
@@ -58,10 +83,11 @@ class EditProfile extends Component {
   }
 
   componentDidMount() {
+    this.userData = new FormData()
+
     // const { match } = this.props
     // const getUserId = get(match, 'match.params.userId')
     const getUserId = this.props.match.params.userId
-
     this.props.getUserInformation(getUserId)
   }
 
@@ -87,9 +113,14 @@ class EditProfile extends Component {
   }
 
   onSubmit = values => {
+    let formData = new FormData()
+    formData.append("name", values.name)
+    formData.append("photo", values.photo)
+
     const { user } = this.props
     const getUserId = get(user, "loadedUser._id")
-    this.props.editUserProfile(values, getUserId)
+    //this.props.editUserProfile(values, getUserId)
+    this.props.editUserProfile(formData, getUserId)
   }
 
   renderEditPhoto = () => {
@@ -100,7 +131,7 @@ class EditProfile extends Component {
       <FrameC show={true} animate={true} level={3} corners={4} layer="primary">
         <div style={{ padding: "20px 40px", fontSize: "30px" }}>
           <Hide enable={this.state.isEditPhoto}>
-            {/*https://codesandbox.io/s/z39y9mlwq4*/}
+            <Field name="photo" component={FileInput} type="file" />
           </Hide>
           <Hide enable={!this.state.isEditPhoto} />
         </div>
@@ -120,7 +151,8 @@ class EditProfile extends Component {
   }
 
   render() {
-    const { user, isExpanded, handleSubmit } = this.props
+    const { user, isExpanded, handleSubmit, formValues } = this.props
+    console.log("%c formValues", "background: red", formValues)
     const getName = get(user, "loadedUser.name")
     const getEmail = get(user, "loadedUser.email")
     const getUserId = get(user, "loadedUser._id")

@@ -104,8 +104,12 @@ export const signUp = (values = {}) => {
 
 export const editUserProfile = (values = {}, userId) => {
   const END_POINT = `/user/${userId}`
+
+  const config = {
+    headers: { "content-type": "multipart/form-data" }
+  }
   return async dispatch => {
-    let [err, response] = await to(cyberpunk.put(END_POINT, values))
+    let [err, response] = await to(cyberpunk.put(END_POINT, values, config))
     if (err) {
       console.error("%c err", "background: red", err)
       const safeError = {
@@ -247,7 +251,6 @@ export const getUsers = userId => {
     dispatch(loadedUsers(response.data))
   }
 }
-
 
 export const deleteUser = userId => {
   const getToken1 = JSON.parse(localStorage.getItem("jwt"))
