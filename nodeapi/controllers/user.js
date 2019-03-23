@@ -1,5 +1,7 @@
 const User = require("../models/user")
 const extend = require("lodash/extend")
+const formidable = require("formidable")
+const fs = require("fs")
 
 exports.userById = (req, res, next, id) => {
   User.findById(id).exec((err, user) => {
@@ -40,21 +42,61 @@ exports.getUser = (req, res) => {
   return res.json(req.profile)
 }
 
+// exports.updateUser = (req, res, next) => {
+//   let user = req.profile
+//   // todo: use spread instead
+//   user = extend(user, req.body)
+//   user.updated = Date.now()
+//   user.save(err => {
+//     if (err) {
+//       return res.status(400).json({
+//         error: "You are not authorized to perform this action"
+//       })
+//     }
+//     user.hashed_password = undefined
+//     user.salt = undefined
+//     res.json({ user })
+//   })
+// }
+
 exports.updateUser = (req, res, next) => {
-  let user = req.profile
-  // todo: use spread instead
-  user = extend(user, req.body)
-  user.updated = Date.now()
-  user.save(err => {
+  let form = new formidable.IncomingForm()
+  form.keepExtensions = true
+  form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
-        error: "You are not authorized to perform this action"
+        error: "Photo could not be uploaded"
       })
     }
-    user.hashed_password = undefined
-    user.salt = undefined
-    res.json({ user })
+
+    //save user
+    let user = req.profile
+    user = extend(user, fields)
+    user.updated = Date.now()
+    if (files.photo) {
+      user.photo.data = fs.readFileSync(files.photo.path)
+      user.photo.contentType = files.photo.type
+    }
+    user.save((err, result) => {
+      if (err) {
+        return res.status(400).json({
+          error: err
+        })
+      }
+      user.hashed_password = undefined
+      user.salt = undefined
+      res.json(user)
+    })
   })
+}
+
+exports.userPhoto = (req, res, next) => {
+  console.log('hiii')
+  if (req.profile.photo.data) {
+    res.set("Content-Type", req.profile.photo.contentType)
+    return res.send(req.profile.photo.data)
+  }
+  next()
 }
 
 exports.deleteUser = (req, res, next) => {
@@ -68,6 +110,5 @@ exports.deleteUser = (req, res, next) => {
     user.hashed_password = undefined
     user.salt = undefined
     res.json({ user })
-
   })
 }

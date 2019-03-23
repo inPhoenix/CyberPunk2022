@@ -14,6 +14,7 @@ import {
 import { Redirect } from "react-router-dom"
 import { Field, formValueSelector, getFormValues, reduxForm } from "redux-form"
 
+const A500KB = 100000 / 2
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
 
 // References:
@@ -27,18 +28,21 @@ const adaptFileEventToValue = delegate => e => {
 
 const FileInput = ({
   input: { value: omitValue, onChange, onBlur, ...inputProps },
-  meta: omitMeta,
+  meta: { error },
   ...props
 }) => {
   return (
-    <input
-      accept="image/*"
-      onChange={adaptFileEventToValue(onChange)}
-      onBlur={adaptFileEventToValue(onBlur)}
-      type="file"
-      {...props.input}
-      {...props}
-    />
+    <div>
+      <input
+        accept="image/*"
+        onChange={adaptFileEventToValue(onChange)}
+        onBlur={adaptFileEventToValue(onBlur)}
+        type="file"
+        {...props.input}
+        {...props}
+      />
+      {error && <div> {error}</div>}
+    </div>
   )
 }
 
@@ -152,7 +156,6 @@ class EditProfile extends Component {
 
   render() {
     const { user, isExpanded, handleSubmit, formValues } = this.props
-    console.log("%c formValues", "background: red", formValues)
     const getName = get(user, "loadedUser.name")
     const getEmail = get(user, "loadedUser.email")
     const getUserId = get(user, "loadedUser._id")
@@ -309,8 +312,16 @@ const mapState = state => {
   }
 }
 
+const validate = values => {
+  const errors = {}
+  if (values.photo && values.photo.size > A500KB) {
+    errors.photo = "The file is to large."
+  }
+  return errors
+}
+
 const FORM_NAME = "EditProfile"
-const form = reduxForm({ form: FORM_NAME })(EditProfile)
+const form = reduxForm({ form: FORM_NAME, validate })(EditProfile)
 
 const mapStateToProps = state => {
   const getName = get(state.user, "loadedUser.name")

@@ -4,7 +4,8 @@ const {
   allUsers,
   getUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  userPhoto
 } = require("../controllers/user")
 const { requireSignin } = require("../controllers/auth")
 
@@ -18,6 +19,8 @@ router.get("/users", allUsers)
 router.get("/user/:userId", requireSignin, getUser)
 router.put("/user/:userId", requireSignin, updateUser)
 router.delete("/user/:userId", requireSignin, deleteUser)
+// profile picture
+router.get('/user/photo/:userId', userPhoto)
 
 // execute if there is :userId on the url.
 // UserById method will trigger validation
