@@ -42,7 +42,8 @@ class Homepage extends Component {
 
 const mapState = state => {
   return {
-    user: state.user
+    user: state.user,
+    posts: state.posts
   }
 }
 

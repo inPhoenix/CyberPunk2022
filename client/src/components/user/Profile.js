@@ -99,10 +99,10 @@ class Profile extends Component {
 
     const safeUser = {
       loadedUser: {
-        user: {
-          name: "",
-          email: ""
-        },
+        name: "",
+        email: "",
+        about: 'user didnt provide any info about him',
+
         ...user.loadedUser
       }
     }
@@ -110,6 +110,7 @@ class Profile extends Component {
     const getName = safeUser.loadedUser.name
     const getEmail = safeUser.loadedUser.email
     const getId = safeUser.loadedUser._id
+    const getAbout = safeUser.loadedUser.about
 
     if (!this.isAuthenticated) {
       //return this.notAuthorized()
@@ -141,6 +142,9 @@ class Profile extends Component {
                       {getEmail}
                     </Words>
                     <br />
+                    <Words animate show={anim.entered}>
+                      {getAbout}
+                    </Words>
                     <div style={{ marginTop: "30px" }} />
 
                     {(isCurrentUser || enableDelete) && (

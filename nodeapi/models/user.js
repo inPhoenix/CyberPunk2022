@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const uuidv1 = require("uuid/v1")
-const crypto = require("crypto");
+const crypto = require("crypto")
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
   photo: {
     data: Buffer,
     contentType: String
+  },
+  about: {
+    type: String,
+    trim: true
   }
 })
 
@@ -34,15 +38,15 @@ userSchema
   .virtual("password")
   .set(function(password) {
     // create temporary variable called _password
-    this._password = password;
+    this._password = password
     // generate a timestamp
-    this.salt = uuidv1();
+    this.salt = uuidv1()
     // encryptPassword()
-    this.hashed_password = this.encryptPassword(password);
+    this.hashed_password = this.encryptPassword(password)
   })
   .get(function() {
-    return this._password;
-  });
+    return this._password
+  })
 
 // methods
 
@@ -63,6 +67,5 @@ userSchema.methods = {
     }
   }
 }
-
 
 module.exports = mongoose.model("User", userSchema)

@@ -7,13 +7,13 @@ import styled from "styled-components"
 import get from "lodash.get"
 import {
   checkIsAuthenticated,
-  isAuthenticated,
+  // isAuthenticated,
   getUserInformation,
   editUserProfile
 } from "./redux/reducers"
-import { Redirect } from "react-router-dom"
+// import { Redirect } from "react-router-dom"
 import { Field, formValueSelector, getFormValues, reduxForm } from "redux-form"
-import axios from "axios"
+// import axios from "axios"
 
 const A500KB = 200000
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
@@ -89,7 +89,8 @@ class EditProfile extends Component {
     isEditName: false,
     isEditPassword: false,
     isEditEmail: false,
-    isEditPhoto: false
+    isEditPhoto: false,
+    isEditAbout: false
   }
 
   componentDidMount() {
@@ -122,15 +123,24 @@ class EditProfile extends Component {
       isEditPhoto: !prev.isEditPhoto
     }))
   }
+  enableEditAbout = () => {
+    this.setState(prev => ({
+      isEditAbout: !prev.isEditAbout
+    }))
+  }
 
   onSubmit = values => {
+    console.log("%c values.photo", "background: red", values.photo)
     let formData = new FormData()
     formData.append("name", values.name)
-    formData.append("photo", values.photo)
+    if (values.photo) {
+      formData.append("photo", values.photo)
+    }
+    formData.append("about", values.about)
 
     const { user } = this.props
     const getUserId = get(user, "loadedUser._id")
-    //this.props.editUserProfile(values, getUserId)
+
     this.props.editUserProfile(formData, getUserId)
   }
 
@@ -188,6 +198,7 @@ class EditProfile extends Component {
     const getName = get(user, "loadedUser.name")
     const getEmail = get(user, "loadedUser.email")
     const getUserId = get(user, "loadedUser._id")
+    const getAbout = get(user, "loadedUser.about")
 
     if (!this.isAuthenticated) {
       //return this.notAuthorized()
@@ -316,6 +327,44 @@ class EditProfile extends Component {
                     </Button>
                   </ButtonBar>
                 </FrameC>
+
+                <FrameC
+                  show={true}
+                  animate={true}
+                  level={3}
+                  corners={4}
+                  layer="primary"
+                >
+                  <div
+                    style={{
+                      padding: "20px 40px",
+                      fontSize: "32px",
+                      textAlign: "center"
+                    }}
+                  >
+                    <Hide enable={this.state.isEditAbout}>
+                      <Field name="about" component={renderField} type="text" />
+                    </Hide>
+                    <Hide enable={!this.state.isEditAbout}>{getAbout}</Hide>
+                  </div>
+                  <ButtonBar>
+                    <Button
+                      buttonProps={type}
+                      type="button"
+                      animate
+                      layer="control"
+                      onClick={this.enableEditAbout}
+                    >
+                      <Icon
+                        path={mdiChemicalWeapon}
+                        size={0.7}
+                        color="green"
+                        spin
+                      />{" "}
+                      Edit About
+                    </Button>
+                  </ButtonBar>
+                </FrameC>
               </div>
               <ButtonBar right>
                 <Button animate layer="success">
@@ -350,9 +399,12 @@ const form = reduxForm({ form: FORM_NAME, validate })(EditProfile)
 const mapStateToProps = state => {
   const getName = get(state.user, "loadedUser.name")
   const getEmail = get(state.user, "loadedUser.email")
+  const getAbout = get(state.user, "loadedUser.about")
+
   const initialValues = {
     name: getName,
-    email: getEmail
+    email: getEmail,
+    about: getAbout
   }
   return {
     formValues: getFormValues(FORM_NAME)(state),
