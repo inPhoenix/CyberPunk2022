@@ -122,7 +122,7 @@ export const editUserProfile = (values = {}, userId) => {
       await dispatch(errorHandling())
     } else {
       await dispatch(updateEditUser(response.data))
-      //history.push("/")
+      history.push(`/user/${userId}`)
     }
   }
 }

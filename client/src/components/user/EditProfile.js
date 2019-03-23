@@ -13,9 +13,15 @@ import {
 } from "./redux/reducers"
 import { Redirect } from "react-router-dom"
 import { Field, formValueSelector, getFormValues, reduxForm } from "redux-form"
+import axios from "axios"
 
-const A500KB = 100000 / 2
+const A500KB = 200000
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
+
+const isProduction = process.env.NODE_ENV === "production"
+const envURL =
+  process.env.REACT_APP_API_URL || "https://cybersocial.herokuapp.com"
+const PUBLIC_URL = isProduction ? envURL : "http://localhost:8080"
 
 // References:
 // https://github.com/erikras/redux-form/issues/3686
@@ -93,6 +99,7 @@ class EditProfile extends Component {
     // const getUserId = get(match, 'match.params.userId')
     const getUserId = this.props.match.params.userId
     this.props.getUserInformation(getUserId)
+    //this.props.getUserPhoto(getUserId)
   }
 
   enableEditName = () => {
@@ -133,7 +140,8 @@ class EditProfile extends Component {
     }
     return (
       <FrameC show={true} animate={true} level={3} corners={4} layer="primary">
-        <div style={{ padding: "20px 40px", fontSize: "30px" }}>
+        {this.renderPhoto()}
+        <div style={{ padding: "10px 30px", fontSize: "30px" }}>
           <Hide enable={this.state.isEditPhoto}>
             <Field name="photo" component={FileInput} type="file" />
           </Hide>
@@ -151,6 +159,27 @@ class EditProfile extends Component {
           </Button>
         </ButtonBar>
       </FrameC>
+    )
+  }
+
+  renderPhoto = () => {
+    const { user } = this.props
+    const getUserId = get(user, "loadedUser._id", "000")
+    const photoUrl = `${PUBLIC_URL}/user/photo/${getUserId}?${new Date().getTime()}`
+    const photoFallBack = `${ASSETS}/avatarm.png`
+    return (
+      <div style={{ margin: "0 auto", padding: 20, maxWidth: 130 }}>
+        <img
+          style={{ maxWidth: "100px" }}
+          animate
+          src={photoUrl}
+          onError={e => {
+            if (e.target.src !== photoFallBack) {
+              e.target.src = photoFallBack
+            }
+          }}
+        />
+      </div>
     )
   }
 
@@ -178,6 +207,7 @@ class EditProfile extends Component {
           >
             <Project animate header={"Edit Profile"}>
               <div style={{ display: "inline-block", padding: "20px" }}>
+                {/*{this.renderPhoto()}*/}
                 {this.renderEditPhoto()}
                 <FrameC
                   show={true}
@@ -306,16 +336,10 @@ class EditProfile extends Component {
   }
 }
 
-const mapState = state => {
-  return {
-    user: state.user
-  }
-}
-
 const validate = values => {
   const errors = {}
   if (values.photo && values.photo.size > A500KB) {
-    errors.photo = "The file is to large."
+    errors.photo = "The file is too large."
   }
   return errors
 }

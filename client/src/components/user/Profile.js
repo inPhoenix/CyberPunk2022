@@ -14,6 +14,11 @@ import { Redirect } from "react-router-dom"
 
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
 
+const isProduction = process.env.NODE_ENV === "production"
+const envURL =
+  process.env.REACT_APP_API_URL || "https://cybersocial.herokuapp.com"
+const PUBLIC_URL = isProduction ? envURL : "http://localhost:8080"
+
 const ButtonBar = styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -32,6 +37,30 @@ class Profile extends Component {
 
   notAuthorized() {
     return <Redirect to="/signIn" />
+  }
+
+  renderImage = () => {
+    const { user } = this.props
+    const getUserId = get(user, "loadedUser._id", "000")
+    const photoUrl = `${PUBLIC_URL}/user/photo/${getUserId}?${new Date().getTime()}`
+    const photoFallBack = `${ASSETS}/avatarm.png`
+    {
+      /*<Image animate resources={`${ASSETS}/avatarm.png`} />*/
+    }
+    return (
+      <div style={{ margin: "0 auto", padding: 20, maxWidth: 130 }}>
+        <img
+          style={{ maxWidth: "80px" }}
+          animate
+          src={photoUrl}
+          onError={e => {
+            if (e.target.src !== photoFallBack) {
+              e.target.src = photoFallBack
+            }
+          }}
+        />
+      </div>
+    )
   }
 
   componentDidMount() {
@@ -65,7 +94,7 @@ class Profile extends Component {
     const { user } = this.props
     const isCurrentUser = this.hasPermission()
 
-    const isProduction = process.env.NODE_ENV === 'production'
+    const isProduction = process.env.NODE_ENV === "production"
     const enableDelete = !isProduction
 
     const safeUser = {
@@ -98,7 +127,9 @@ class Profile extends Component {
             {anim => (
               <div style={{ display: "flex" }}>
                 <div style={{ display: "", padding: 20, maxWidth: 130 }}>
-                  <Image animate resources={`${ASSETS}/avatarm.png`} />
+                  {/*<Image animate resources={`${ASSETS}/avatarm.png`} />*/}
+
+                  {this.renderImage()}
                 </div>
 
                 <div>
