@@ -30,7 +30,7 @@ exports.getPosts = (req, res) => {
 
 exports.createPost = (req, res, next) => {
   let form = new formidable.IncomingForm()
-  form.keepExptensions = true
+  form.keepExtensions = true
   form.parse(req, (err, fields, files) => {
     if (err) {
       return res.status(400).json({
