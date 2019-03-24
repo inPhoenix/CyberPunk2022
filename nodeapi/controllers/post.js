@@ -31,35 +31,40 @@ exports.getPosts = (req, res) => {
 exports.createPost = (req, res, next) => {
   let form = new formidable.IncomingForm()
   form.keepExtensions = true
-  form.parse(req, (err, fields, files) => {
-    if (err) {
-      return res.status(400).json({
-        error: "Image could not be uploaded"
-      })
-    }
-    let post = new Post(fields)
-
-    // remove hashed password from the response
-
-    req.profile.hashed_password = undefined
-    req.profile.salt = undefined
-    post.postedBy = req.profile
-
-    if (files.photo) {
-      post.photo.data = fs.readFileSync(files.photo.path)
-      post.photo.contentType = files.photo.type
-    }
-    post.save((err, result) => {
-      if (err) {
-        return res.status(400).json({
-          error: err
-        })
-      }
-      res.json(result)
-    })
-  })
+  // It will be needed this in case of handling photos
+  // form.parse(req, (err, fields, files) => {
+  //   console.log('%c you are here2', 'background: red')
+  //   if (err) {
+  //     return res.status(400).json({
+  //       error: "Image could not be uploaded"
+  //     })
+  //   }
+  //   let post = new Post(fields)
+  //
+  //   // remove hashed password from the response
+  //
+  //   req.profile.hashed_password = undefined
+  //   req.profile.salt = undefined
+  //   post.postedBy = req.profile
+  //
+  //   if (files.photo) {
+  //     post.photo.data = fs.readFileSync(files.photo.path)
+  //     post.photo.contentType = files.photo.type
+  //   }
+  //   post.save((err, result) => {
+  //     if (err) {
+  //       return res.status(400).json({
+  //         error: err
+  //       })
+  //     }
+  //     res.json(result)
+  //   })
+  // })
 
   const post = new Post(req.body)
+  req.profile.hashed_password = undefined
+  req.profile.salt = undefined
+  post.postedBy = req.profile
   post.save().then(result => {
     res.status(200).json({
       post: result
