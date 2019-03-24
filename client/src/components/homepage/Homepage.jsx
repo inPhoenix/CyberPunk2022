@@ -2,6 +2,9 @@ import React, { Component } from "react"
 import { Arwes, Col, Content, Frame as FrameC, Header, Words } from "arwes"
 import { connect } from "react-redux"
 import { MarginTop } from "../../common/styled/MarginTop"
+import NewPost from "../post/NewPost"
+
+const isProduction = process.env.NODE_ENV === "production"
 
 class Homepage extends Component {
   get isAuthenticated() {
@@ -19,7 +22,7 @@ class Homepage extends Component {
     )
   }
   render() {
-    if (!this.isAuthenticated) {
+    if (!this.isAuthenticated && isProduction) {
       return this.notAuthorized()
     }
     return (
@@ -33,7 +36,11 @@ class Homepage extends Component {
               </Words>
             </h3>
           </FrameC>
-          <div>You are Logged</div>
+
+          <div style={{ margin: '30px' }}>
+            <NewPost/>
+          </div>
+
         </Col>
       </Arwes>
     )

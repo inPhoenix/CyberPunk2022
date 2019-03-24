@@ -130,7 +130,7 @@ class EditProfile extends Component {
   }
 
   onSubmit = values => {
-    console.log("%c values.photo", "background: red", values.photo)
+    const { user } = this.props
     let formData = new FormData()
     formData.append("name", values.name)
     if (values.photo) {
@@ -138,7 +138,6 @@ class EditProfile extends Component {
     }
     formData.append("about", values.about)
 
-    const { user } = this.props
     const getUserId = get(user, "loadedUser._id")
 
     this.props.editUserProfile(formData, getUserId)
