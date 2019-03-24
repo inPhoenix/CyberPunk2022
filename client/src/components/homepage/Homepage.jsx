@@ -3,6 +3,7 @@ import { Arwes, Col, Content, Frame as FrameC, Header, Words } from "arwes"
 import { connect } from "react-redux"
 import { MarginTop } from "../../common/styled/MarginTop"
 import NewPost from "../post/NewPost"
+import ListPosts from "../post/ListPosts"
 
 const isProduction = process.env.NODE_ENV === "production"
 
@@ -37,10 +38,13 @@ class Homepage extends Component {
             </h3>
           </FrameC>
 
-          <div style={{ margin: '30px' }}>
-            <NewPost/>
+          <div style={{ margin: "30px" }}>
+            <NewPost />
           </div>
 
+          <div style={{ margin: "30px" }}>
+            <ListPosts />
+          </div>
         </Col>
       </Arwes>
     )

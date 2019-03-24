@@ -3,30 +3,31 @@ import { Field, getFormValues, reduxForm } from "redux-form"
 import get from "lodash.get"
 import { connect } from "react-redux"
 import { Button, Frame as FrameC, Project } from "arwes"
-import { createPost } from "./redux/reducers"
+import { createPost, fetchPosts } from "./redux/reducers"
 import Icon from "@mdi/react"
 import { mdiChemicalWeapon, mdiRobot } from "@mdi/js"
 import { ButtonBar } from "../Styled"
 import TextAreaField from "../ReduxForm/TextAreaField"
 import InputField from "../ReduxForm/InputField"
 
-
 class NewPost extends Component {
-//
+  //
   onSubmit = values => {
     const { user } = this.props
     const getUserId = get(user, "loaded.user._id")
-    if(getUserId) {
-    this.props.createPost(values, getUserId)
+    if (getUserId) {
+      this.props.createPost(values, getUserId)
     } else {
-      console.error('%c you are in dev mode, and logged out', 'background: yellow; color: red', )
-
+      console.error(
+        "%c you are in dev mode, and logged out",
+        "background: yellow; color: red"
+      )
     }
   }
 
   render() {
     const { handleSubmit, user } = this.props
-    console.log('%c user', 'background: red', user)
+    console.log("%c user", "background: red", user)
     return (
       <Project animate header={"Create new Post"}>
         <form onSubmit={handleSubmit(this.onSubmit)}>
@@ -44,8 +45,8 @@ class NewPost extends Component {
                 textAlign: "center"
               }}
             >
-              <InputField name={'title'}/>
-              <TextAreaField name={'body'}/>
+              <InputField name={"title"} />
+              <TextAreaField name={"body"} />
             </div>
           </FrameC>
 
@@ -80,5 +81,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { createPost }
+  { createPost, fetchPosts }
 )(form)

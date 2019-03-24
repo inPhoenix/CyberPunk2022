@@ -8,6 +8,7 @@ import history from "../../../history"
 const CREATE_POST = "cyberpunk-media/CREATE_POST"
 const LOAD_POSTS = "cyberpunk-media/LOAD_POSTS"
 const IS_LOADING = "cyberpunk-media/IS_LOADING"
+const FETCH_POSTS = "cyberpunk-media/FETCH_POSTS"
 
 const errorLog = error => {
   console.error("%c Error: ", "background: red; color: yellow", error)
@@ -23,13 +24,19 @@ export const postReducer = (state = INITIAL_STATE, action = {}) => {
     case CREATE_POST:
       return {
         ...state,
-        isError: false,
-        posts: action.payload
+        isError: false
+        //posts: action.payload
       }
     case IS_LOADING:
       return {
         ...state,
         isLoading: action.status
+      }
+    case FETCH_POSTS:
+      return {
+        ...state,
+        ...action.posts,
+        isLoading: false
       }
     default:
       return state
@@ -45,6 +52,7 @@ export const createPost = (values = {}, userId) => {
     let [err, response] = await to(
       cyberpunk.post(`/post/new/${userId}`, values)
     )
+
     if (err) {
       console.error("%c err", "background: red", err)
       const safeError = {
@@ -54,22 +62,18 @@ export const createPost = (values = {}, userId) => {
         }
       }
       errorLog(safeError.response.data)
-      // await dispatch(errorHandling())
     } else {
       await dispatch(updatePosts(response.data))
+      await dispatch(fetchPosts(response.data))
       //history.push("/")
     }
   }
 }
 
-export const getPosts = userId => {
-  const getToken1 = JSON.parse(localStorage.getItem("jwt"))
-  const getToken = (getToken1 && getToken1.token) || "noToken"
-
-  cyberpunk.defaults.headers.common = { Authorization: `bearer ${getToken}` }
-
+export const fetchPosts = () => {
+  console.log("%c fetching", "background: purple")
   return async dispatch => {
-    const response = await cyberpunk.get(`/user/${userId}`)
+    const response = await cyberpunk.get(`/posts/`)
     dispatch(loadPosts(response.data))
   }
 }
@@ -84,7 +88,7 @@ export const updatePosts = data => {
 }
 
 export const loadPosts = data => {
-  return { type: LOAD_POSTS, payload: data }
+  return { type: FETCH_POSTS, posts: data }
 }
 
 // utility function to catch errors
