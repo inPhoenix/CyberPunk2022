@@ -20,7 +20,8 @@ exports.postById = (req, res, next, id) => {
 exports.getPosts = (req, res) => {
   const posts = Post.find()
     .populate("postedBy", "_id name")
-    .select("_id title body")
+    .select("_id title body created")
+    .sort({ created: -1 }) // reorder
     .then(posts => {
       res.json({ posts })
     })
