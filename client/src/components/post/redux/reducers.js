@@ -1,6 +1,5 @@
 import cyberpunk from "../../../apis/cyberpunk"
-import history from "../../../history"
-//import { errorHandling, loadedUser } from "../../user/redux/reducers"
+
 // This is a duck
 // https://github.com/erikras/ducks-modular-redux
 
@@ -65,13 +64,13 @@ export const createPost = (values = {}, userId) => {
     } else {
       await dispatch(updatePosts(response.data))
       await dispatch(fetchPosts(response.data))
+      //await dispatch(reset('NewPost'))
       //history.push("/")
     }
   }
 }
 
 export const fetchPosts = () => {
-  console.log("%c fetching", "background: purple")
   return async dispatch => {
     const response = await cyberpunk.get(`/posts/`)
     dispatch(loadPosts(response.data))
@@ -83,7 +82,6 @@ const setLoading = state => {
 }
 
 export const updatePosts = data => {
-  console.log("%c data", "background: red", data)
   return { type: CREATE_POST, payload: data }
 }
 
