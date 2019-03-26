@@ -92,7 +92,7 @@ class NewPost extends Component {
           <ButtonBar>
             <Button animate layer="success" onClick={this.enableCreatePost}>
               <Icon path={mdiChemicalWeapon} size={0.7} color="green" spin />{" "}
-              Create Post
+              New Post
             </Button>
           </ButtonBar>
         </Hide>

@@ -13,3 +13,12 @@
   }
   margin-bottom: 15px;
 }
+
+
+.form-control-alt {
+ @extend .form-control;
+ border: #5f3dff 2px solid;
+ &:focus {
+  border-color: #6fbfff;
+ }
+}

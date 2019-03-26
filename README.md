@@ -23,3 +23,4 @@ Improvements:
     Add validation on user edit
     Add strategy: https://reacttraining.com/react-router/web/example/auth-workflow
     Fix the download user picture for the first time on Edit Profile
+    https://css-tricks.com/gradient-borders-in-css/
