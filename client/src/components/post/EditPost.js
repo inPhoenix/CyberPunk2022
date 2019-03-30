@@ -5,6 +5,7 @@ import { connect } from "react-redux"
 import { Arwes, Button } from "arwes"
 import { fetchSinglePost, updatePost } from "./redux/reducers"
 import TextAreaField from "../ReduxForm/TextAreaField"
+import { ButtonBar } from "../Styled"
 
 class EditPost extends Component {
   componentDidMount() {
@@ -44,12 +45,26 @@ class EditPost extends Component {
               className={"full-width"}
             />
           </div>
-          <Button
-            buttonProps={{ type: "button" }}
-            onClick={handleSubmit(this.submit)}
-          >
-            Save
-          </Button>
+          <ButtonBar right>
+            <div style={{ paddingRight: "15px" }}>
+              <Button
+                buttonProps={{ type: "button" }}
+                onClick={handleSubmit(this.submit)}
+                animate
+                layer="alert"
+              >
+                Save
+              </Button>
+            </div>
+            <Button
+              animate
+              layer="success"
+              buttonProps={{ type: "button" }}
+              onClick={() => this.props.history.push(`/homepage/`)}
+            >
+              Cancel
+            </Button>
+          </ButtonBar>
         </div>
       </Arwes>
     )
