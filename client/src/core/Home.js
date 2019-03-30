@@ -64,11 +64,6 @@ class Home extends Component {
                   </Link>
                 </div>
               </div>
-              <div style={{ margin: 20 }}>
-                {/*<Link to={"/signIn"}>
-                  <Lnk>Login</Lnk>
-                </Link>*/}
-              </div>
             </div>
           </FrameC>
         </Right>

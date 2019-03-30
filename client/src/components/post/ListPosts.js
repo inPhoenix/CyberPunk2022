@@ -1,14 +1,15 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { fetchPosts } from "./redux/reducers"
-import { Content, Frame as FrameC, List } from "arwes"
-import styled from "styled-components"
+import { Link } from "react-router-dom"
+import Post from "./Post"
 
-const Title = styled.div`
-  padding: 10px 10px 10px 15px;
-`
 
 class ListPosts extends Component {
+  state = {
+    count: "success",
+    corner: 1
+  }
   componentDidMount() {
     this.props.fetchPosts()
   }
@@ -18,18 +19,17 @@ class ListPosts extends Component {
   }
 
   render() {
-    const { posts } = this.props
+    const { data } = this.props
     return (
       <div>
-        {posts.posts.length &&
-          posts.posts.map(post => {
+        {data.posts.length &&
+          data.posts.map((post) => {
             return (
-              <FrameC animate level={2} corners={1} layer={"success"}>
-                <Content node="ul" key={post._id}>
-                  <Title data-layer="disabled">{post.title}</Title>
-                  <blockquote data-layer="disabled">{post.body}</blockquote>
-                </Content>
-              </FrameC>
+              <div key={post._id}>
+                <Link to={`/post/${post._id}`} style={{ textDecoration: 'none' }}>
+                 <Post post={post}/>
+                </Link>
+              </div>
             )
           })}
       </div>
@@ -39,7 +39,7 @@ class ListPosts extends Component {
 
 const mapState = state => {
   return {
-    posts: state.posts
+    data: state.posts
   }
 }
 

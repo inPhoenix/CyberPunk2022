@@ -10,7 +10,10 @@ import {
   isAuthenticated,
   getUserInformation
 } from "./redux/reducers"
-import { Redirect } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
+import { listPostsByUser } from "../post/redux/reducers"
+import Post from "../post/Post"
+import PostByUser from "../post/PostByUser"
 
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
 
@@ -64,11 +67,10 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-    // const { match } = this.props
-    // const getUserId = get(match, 'match.params.userId')
     const getUserId = this.props.match.params.userId
 
     this.props.getUserInformation(getUserId)
+    this.props.listPostsByUser(getUserId)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -91,7 +93,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { user } = this.props
+    const { user, posts } = this.props
     const isCurrentUser = this.hasPermission()
 
     const isProduction = process.env.NODE_ENV === "production"
@@ -101,7 +103,7 @@ class Profile extends Component {
       loadedUser: {
         name: "",
         email: "",
-        about: 'user didnt provide any info about him',
+        about: "user didnt provide any info about him",
 
         ...user.loadedUser
       }
@@ -128,8 +130,6 @@ class Profile extends Component {
             {anim => (
               <div style={{ display: "flex" }}>
                 <div style={{ display: "", padding: 20, maxWidth: 130 }}>
-                  {/*<Image animate resources={`${ASSETS}/avatarm.png`} />*/}
-
                   {this.renderImage()}
                 </div>
 
@@ -190,6 +190,16 @@ class Profile extends Component {
               </div>
             )}
           </Project>
+          <div style={{ margin: "30px" }}>
+            {posts.userPosts.length &&
+              posts.userPosts.map(post => {
+                return (
+                  <Link to={`/post/${post._id}`} style={{ textDecoration: 'none' }}>
+                    <PostByUser post={post} />
+                  </Link>
+                )
+              })}
+          </div>
         </div>
       </Arwes>
     )
@@ -198,11 +208,12 @@ class Profile extends Component {
 
 const mapState = state => {
   return {
-    user: state.user
+    user: state.user,
+    posts: state.posts
   }
 }
 
 export default connect(
   mapState,
-  { checkIsAuthenticated, getUserInformation }
+  { checkIsAuthenticated, getUserInformation, listPostsByUser }
 )(Profile)

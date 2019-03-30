@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { getFormValues, reduxForm, reset } from "redux-form"
 import get from "lodash.get"
 import { connect } from "react-redux"
-import { Button, Frame as FrameC, Project } from "arwes"
+import { Button, Frame as FrameC, Loading, Project } from "arwes"
 import { createPost, fetchPosts } from "./redux/reducers"
 import Icon from "@mdi/react"
 import { mdiChemicalWeapon, mdiCancel } from "@mdi/js"
@@ -13,6 +13,11 @@ import styled from "styled-components"
 
 const Hide = styled.div`
   display: ${props => (props.enable ? "in-block" : "none")};
+`
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 10px;
 `
 
 const type = {
@@ -95,6 +100,11 @@ class NewPost extends Component {
               New Post
             </Button>
           </ButtonBar>
+          {this.props.posts.isLoading && (
+            <LoadingContainer>
+              <Loading animate small />
+            </LoadingContainer>
+          )}
         </Hide>
       </Project>
     )

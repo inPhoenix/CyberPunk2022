@@ -56,7 +56,7 @@ class Users extends Component {
           {user.loadedUsers.length &&
             user.loadedUsers.map(user => {
               return (
-                <div>
+                <div key={user._id}>
                   <div style={{ width: "200px" }}>
                     <Blockquote data-layer="success">
                       <div

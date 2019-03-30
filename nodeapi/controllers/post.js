@@ -33,7 +33,6 @@ exports.createPost = (req, res, next) => {
   form.keepExtensions = true
   // It will be needed this in case of handling photos
   // form.parse(req, (err, fields, files) => {
-  //   console.log('%c you are here2', 'background: red')
   //   if (err) {
   //     return res.status(400).json({
   //       error: "Image could not be uploaded"
@@ -123,4 +122,8 @@ exports.deletePost = (req, res) => {
       message: "Post deleted successfully"
     })
   })
+}
+
+exports.singlePost = (req, res) => {
+  return res.json(req.post)
 }

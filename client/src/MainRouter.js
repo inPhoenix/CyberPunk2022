@@ -14,6 +14,7 @@ import Users from "./components/user/Users"
 import DeleteUser from "./components/user/DeleteUser"
 import EditProfile from "./components/user/EditProfile"
 import PrivateRoute from "./PrivateRoute"
+import PostInfo from "./components/post/PostInfo"
 
 const PATH = process.env.NODE_ENV === "production" ? "/" : "/"
 
@@ -197,11 +198,16 @@ const MainRouter = ({ signOut, user }) => {
                     <DeleteUser isExpanded={expanded} {...props} />
                   )}
                 />
+                <Route
+                  path={`${PATH}post/:postId`}
+                  render={props => (
+                    <PostInfo isExpanded={expanded} {...props} />
+                  )}
+                />
                 <PrivateRoute
                   path={`${PATH}editUser/:userId`}
                   component={EditProfile}
                   isExpanded={expanded}
-
                 />
                 <Route
                   path={`${PATH}`}
