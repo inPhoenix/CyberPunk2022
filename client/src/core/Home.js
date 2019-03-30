@@ -1,10 +1,11 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
-import { Arwes, Link as Lnk, Words, Row, Col, Frame as FrameC } from "arwes"
+import { Arwes, Words, Frame as FrameC } from "arwes"
 import styled from "styled-components"
 import { connect } from "react-redux"
 import { signIn } from "../components/user/redux/reducers"
 import SignInInternal from "../components/user/SignInInternal"
+import LoginGoogle from "../components/user/LoginGoogle"
 
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
 
@@ -56,11 +57,17 @@ class Home extends Component {
               </h3>
               <SignInInternal onSubmit={this.handleSubmit} />
 
+
               <div style={{ margin: 20 }}>
-                <Words layer="secondary">New User?</Words>
+                <div>
+                  <LoginGoogle />
+                </div>
+              </div>
+
+              <div style={{ margin: 20 }}>
                 <div>
                   <Link to={"/signUp"}>
-                    <Lnk>SignUp</Lnk>
+                    New User
                   </Link>
                 </div>
               </div>

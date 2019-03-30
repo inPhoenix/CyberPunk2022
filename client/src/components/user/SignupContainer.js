@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import Signup from "./Signup"
-import { Arwes, Col, Frame as FrameC, Header, Row, Words } from "arwes"
+import { Arwes, Col, Frame as FrameC, Row, Words } from "arwes"
 import styled from "styled-components"
 import { signUp } from "./redux/reducers"
 import { connect } from "react-redux"

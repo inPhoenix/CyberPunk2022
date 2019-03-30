@@ -21,7 +21,7 @@ class EditPost extends Component {
   }
 
   render() {
-    const { handleSubmit, posts } = this.props
+    const { handleSubmit } = this.props
     return (
       <Arwes>
         <div

@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { getUsers } from "./redux/reducers"
-import { Arwes, Blockquote, Button, Image } from "arwes"
+import { Arwes, Blockquote, Button } from "arwes"
 import Icon from "@mdi/react"
 import { mdiChemicalWeapon } from "@mdi/js"
 import get from "lodash.get"
@@ -22,14 +22,12 @@ class Users extends Component {
     const getUserId = get(user, "_id", "000")
     const photoUrl = `${PUBLIC_URL}/user/photo/${getUserId}?${new Date().getTime()}`
     const photoFallBack = `${ASSETS}/avatarm.png`
-    {
-      /*<Image animate resources={`${ASSETS}/avatarm.png`} />*/
-    }
     return (
       <div style={{ margin: "0 auto", padding: 20, maxWidth: 130 }}>
         <img
           style={{ maxWidth: "80px" }}
           animate
+          alt={'profile'}
           src={photoUrl}
           onError={e => {
             if (e.target.src !== photoFallBack) {

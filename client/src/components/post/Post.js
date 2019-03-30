@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Content, Frame as FrameC, List, Words } from "arwes"
+import { Content, Frame as FrameC } from "arwes"
 import styled from "styled-components"
 import format from "date-fns/format"
 import parseISO from "date-fns/parseISO"
@@ -16,12 +16,12 @@ const Title = styled.div`
 
 const ByContainer = styled.div`
   display: flex;
- 
+
   flex-direction: column;
   align-items: flex-end;
   font-size: 0.7rem;
   span {
-  color: #6fbfff;
+    color: #6fbfff;
   }
 `
 
@@ -30,9 +30,7 @@ class Post extends Component {
     count: "success",
     corner: 1
   }
-  mouseOver = (key, postId) => {
-    const { data } = this.props
-
+  mouseOver = () => {
     this.setState({
       count: "control",
       corner: 4
@@ -69,7 +67,9 @@ class Post extends Component {
             <Title data-layer="disabled">{post.title}</Title>
             <blockquote data-layer="disabled">{postBody}</blockquote>
             <ByContainer>
-              <Text><span>Posted by</span> {post.postedBy.name}</Text>
+              <Text>
+                <span>Posted by</span> {post.postedBy.name}
+              </Text>
               <Text color={"#d1ffdb"}>{displayDate}</Text>
             </ByContainer>
           </Content>

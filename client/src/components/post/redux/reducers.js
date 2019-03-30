@@ -1,13 +1,11 @@
 import cyberpunk from "../../../apis/cyberpunk"
 import history from "../../../history"
-import { deleteUserEvent } from "../../user/redux/reducers"
 
 // This is a duck
 // https://github.com/erikras/ducks-modular-redux
 
 // Actions
 const CREATE_POST = "cyberpunk-media/CREATE_POST"
-const LOAD_POSTS = "cyberpunk-media/LOAD_POSTS"
 const IS_LOADING = "cyberpunk-media/IS_LOADING"
 const FETCH_POSTS = "cyberpunk-media/FETCH_POSTS"
 const FETCH_POST = "cyberpunk-media/FETCH_POST"

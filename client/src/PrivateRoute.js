@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 import { isAuthenticatedPure } from "./components/user/redux/reducers"
 import { Route } from "react-router-dom"
 import { Arwes, Project } from "arwes"

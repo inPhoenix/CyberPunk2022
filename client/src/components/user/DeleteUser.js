@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { Arwes, Button, Header, Frame as FrameC } from "arwes"
 import Icon from "@mdi/react"
-import { mdiChemicalWeapon, mdiRobot } from "@mdi/js"
+import { mdiChemicalWeapon } from "@mdi/js"
 import styled from "styled-components"
 import { connect } from "react-redux"
 import get from "lodash.get"
@@ -34,7 +34,6 @@ class DeleteUser extends Component {
   handleDelete = () => {
     const {user} = this.props
     const getId = get(user, "loadedUser._id")
-    const getName = get(user, "loadedUser.name")
     if(getId !== GUEST_ID) {
     this.props.deleteUser(getId)
     this.props.signOut()

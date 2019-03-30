@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Field, formValueSelector, reduxForm } from "redux-form"
-import { Button, Frame as FrameC, Project } from "arwes"
+import { Button, Project } from "arwes"
 
 const renderField = ({
   input,

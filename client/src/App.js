@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 import { BrowserRouter, withRouter } from "react-router-dom"
 import MainRouter from "./MainRouter"
 import { connect, Provider } from "react-redux"

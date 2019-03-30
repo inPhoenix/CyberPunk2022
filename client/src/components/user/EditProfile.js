@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Arwes, Button, Project, Words, Image, Frame as FrameC } from "arwes"
+import { Arwes, Button, Project, Frame as FrameC } from "arwes"
 import Icon from "@mdi/react"
-import { mdiChemicalWeapon, mdiRobot } from "@mdi/js"
+import { mdiChemicalWeapon } from "@mdi/js"
 import styled from "styled-components"
 import get from "lodash.get"
 import {
@@ -12,7 +12,7 @@ import {
   editUserProfile
 } from "./redux/reducers"
 // import { Redirect } from "react-router-dom"
-import { Field, formValueSelector, getFormValues, reduxForm } from "redux-form"
+import { Field, getFormValues, reduxForm } from "redux-form"
 // import axios from "axios"
 
 const A500KB = 200000
@@ -181,6 +181,7 @@ class EditProfile extends Component {
         <img
           style={{ maxWidth: "100px" }}
           animate
+          alt={'user'}
           src={photoUrl}
           onError={e => {
             if (e.target.src !== photoFallBack) {
@@ -193,10 +194,9 @@ class EditProfile extends Component {
   }
 
   render() {
-    const { user, isExpanded, handleSubmit, formValues } = this.props
+    const { user, isExpanded, handleSubmit } = this.props
     const getName = get(user, "loadedUser.name")
     const getEmail = get(user, "loadedUser.email")
-    const getUserId = get(user, "loadedUser._id")
     const getAbout = get(user, "loadedUser.about")
 
     if (!this.isAuthenticated) {

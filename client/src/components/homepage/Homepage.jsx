@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Arwes, Col, Content, Frame as FrameC, Header, Words } from "arwes"
+import { Arwes, Col, Content, Frame as FrameC, Words } from "arwes"
 import { connect } from "react-redux"
 import { MarginTop } from "../../common/styled/MarginTop"
 import NewPost from "../post/NewPost"

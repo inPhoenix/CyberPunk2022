@@ -51,7 +51,7 @@ class NewPost extends Component {
   }
 
   render() {
-    const { handleSubmit, user } = this.props
+    const { handleSubmit } = this.props
     const { enableCreate } = this.state
     return (
       <Project animate header={"Create new Post"}>

@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Content, Frame as FrameC, List, Words } from "arwes"
+import { Content, Frame as FrameC } from "arwes"
 import styled from "styled-components"
 import format from "date-fns/format"
 import parseISO from "date-fns/parseISO"

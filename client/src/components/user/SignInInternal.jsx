@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Field, formValueSelector, reduxForm } from "redux-form"
-import { Arwes, Button, Col, Frame as FrameC, Loading, Project } from "arwes"
+import { Arwes, Button, Col, Loading } from "arwes"
 import { MarginTop } from "../../common/styled/MarginTop"
 import styled from "styled-components"
 
@@ -27,20 +27,19 @@ const renderField = ({
   </div>
 )
 
-const color = '#d813ff';
+const color = "#d813ff"
 const Container = styled.div`
-display: flex;
-justify-content: center;
-border-top: ${color} 1px solid;
-border-bottom: ${color} 1px solid;
-padding: 20px 0;
-
+  display: flex;
+  justify-content: center;
+  border-top: ${color} 1px solid;
+  border-bottom: ${color} 1px solid;
+  padding: 20px 0;
 `
 
 const BtnContainer = styled.div`
-width: 100%;
-display: flex;
-justify-content: flex-end;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 `
 
 const BtnModifier = styled.div`
@@ -77,13 +76,13 @@ class SignInInternal extends Component {
               label={"Password"}
               component={renderField}
             />
-              <BtnContainer>
-            <Button animate layer="control">
-              <BtnModifier>
-              <i className="mdi mdi-chemical-weapon" /> Login
-              </BtnModifier>
-            </Button>
-              </BtnContainer>
+            <BtnContainer>
+              <Button animate layer="control">
+                <BtnModifier>
+                  <i className="mdi mdi-chemical-weapon" /> Login
+                </BtnModifier>
+              </Button>
+            </BtnContainer>
           </div>
         </form>
       </Container>

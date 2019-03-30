@@ -142,7 +142,8 @@ export const signOut = () => {
       await dispatch(errorHandling())
     } else {
       const safeResponse = {
-        data: {}
+        data: {},
+        ...response
       }
       await dispatch(updateUser(safeResponse))
       if (window != null) {
@@ -159,6 +160,36 @@ export const signIn = (values = {}) => {
     dispatch(setLoading(true))
     let [err, response] = await to(cyberpunk.post("/signin", values))
 
+    if (err) {
+      console.error("%c err", "background: red", err)
+      const safeError = {
+        response: {
+          data: "error",
+          ...err
+        }
+      }
+      errorLog(safeError.response.data)
+      dispatch(setLoading(false))
+      await dispatch(errorHandling())
+    } else {
+      const safeResponse = {
+        data: {},
+        ...response
+      }
+      await dispatch(updateUser(safeResponse.data))
+      if (window != null) {
+        localStorage.setItem("jwt", JSON.stringify(safeResponse.data))
+      }
+      dispatch(setLoading(false))
+      history.push("/homepage")
+    }
+  }
+}
+
+export const socialLogin = values => {
+  return async dispatch => {
+    dispatch(setLoading(true))
+    let [err, response] = await to(cyberpunk.post("/social-login", values))
     if (err) {
       console.error("%c err", "background: red", err)
       const safeError = {
@@ -274,7 +305,6 @@ export const isAuthenticated = token => {
 
 // Helper without redux
 export const isAuthenticatedPure = () => {
-  return { type: AUTH, payload: JSON.parse(localStorage.getItem("jwt")) }
   if (window == null) {
     return false
   }

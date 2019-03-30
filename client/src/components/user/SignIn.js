@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { Field, formValueSelector, reduxForm } from "redux-form"
-import { Arwes, Button, Col, Frame as FrameC, Loading, Project } from "arwes"
+import { Arwes, Button, Col, Loading, Project } from "arwes"
 import { MarginTop } from "../../common/styled/MarginTop"
 
 const renderField = ({

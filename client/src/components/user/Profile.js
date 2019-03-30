@@ -1,18 +1,13 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { Arwes, Button, Project, Words, Image } from "arwes"
+import { Arwes, Button, Project, Words } from "arwes"
 import Icon from "@mdi/react"
 import { mdiChemicalWeapon, mdiRobot } from "@mdi/js"
 import styled from "styled-components"
 import get from "lodash.get"
-import {
-  checkIsAuthenticated,
-  isAuthenticated,
-  getUserInformation
-} from "./redux/reducers"
+import { checkIsAuthenticated, getUserInformation } from "./redux/reducers"
 import { Link, Redirect } from "react-router-dom"
 import { listPostsByUser } from "../post/redux/reducers"
-import Post from "../post/Post"
 import PostByUser from "../post/PostByUser"
 
 const ASSETS = `${process.env.PUBLIC_URL}/assets`
@@ -47,14 +42,12 @@ class Profile extends Component {
     const getUserId = get(user, "loadedUser._id", "000")
     const photoUrl = `${PUBLIC_URL}/user/photo/${getUserId}?${new Date().getTime()}`
     const photoFallBack = `${ASSETS}/avatarm.png`
-    {
-      /*<Image animate resources={`${ASSETS}/avatarm.png`} />*/
-    }
     return (
       <div style={{ margin: "0 auto", padding: 20, maxWidth: 130 }}>
         <img
           style={{ maxWidth: "80px" }}
           animate
+          alt={"profile"}
           src={photoUrl}
           onError={e => {
             if (e.target.src !== photoFallBack) {
@@ -174,13 +167,7 @@ class Profile extends Component {
                           <Icon path={mdiRobot} size={0.5} color="red" /> DELETE
                           USER
                         </Button>
-                        <Button
-                          animate
-                          layer="alert"
-                          // onClick={() =>
-                          //   this.props.history.push(`/deleteUser/${getId}`)
-                          // }
-                        >
+                        <Button animate layer="alert">
                           <i className="mdi mdi-chemical-weapon" /> BACK TO HOME
                         </Button>
                       </ButtonBar>
@@ -194,7 +181,10 @@ class Profile extends Component {
             {posts.userPosts.length &&
               posts.userPosts.map(post => {
                 return (
-                  <Link to={`/post/${post._id}`} style={{ textDecoration: 'none' }}>
+                  <Link
+                    to={`/post/${post._id}`}
+                    style={{ textDecoration: "none" }}
+                  >
                     <PostByUser post={post} />
                   </Link>
                 )
