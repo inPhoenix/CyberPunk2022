@@ -5,30 +5,40 @@ const renderTextAreaField = ({
   input,
   label,
   type,
+  className,
   meta: { touched, error, warning }
-}) => (
-  <div>
-    <label className={"text-muted"}>{label}</label>
+}) => {
+  const classname = ["form-control", className ? className : ""].join(" ")
+  return (
     <div>
-      <textarea
-        className={"form-control"}
-        {...input}
-        placeholder={label}
-        type={type}
-      />
-      {touched &&
-        ((error && <span>{error}</span>) ||
-          (warning && <span>{warning}</span>))}
+      <label className={"text-muted"}>{label}</label>
+      <div>
+        <textarea
+          className={classname}
+          {...input}
+          placeholder={label}
+          type={type}
+        />
+        {touched &&
+          ((error && <span>{error}</span>) ||
+            (warning && <span>{warning}</span>))}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 class TextAreaField extends Component {
   render() {
-    const { name } = this.props
+    const { name, label, className } = this.props
     return (
       <div>
-        <Field name={name} component={renderTextAreaField} type="input" />
+        <Field
+          name={name}
+          className={className}
+          label={label}
+          component={renderTextAreaField}
+          type="input"
+        />
       </div>
     )
   }

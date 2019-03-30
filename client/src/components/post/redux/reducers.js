@@ -1,4 +1,5 @@
 import cyberpunk from "../../../apis/cyberpunk"
+import history from "../../../history"
 import { deleteUserEvent } from "../../user/redux/reducers"
 
 // This is a duck
@@ -61,8 +62,7 @@ export const postReducer = (state = INITIAL_STATE, action = {}) => {
     case POSTS_BY_USER:
       return {
         ...state,
-        userPosts: [...action.posts]
-        ,
+        userPosts: [...action.posts],
         isLoading: false
       }
     default:
@@ -101,6 +101,35 @@ export const createPost = (values = {}, userId) => {
   }
 }
 
+export const updatePost = (values = {}, postId) => {
+  const getToken1 = JSON.parse(localStorage.getItem("jwt"))
+  const getToken = (getToken1 && getToken1.token) || "noToken"
+  return async dispatch => {
+    dispatch(setLoading(true))
+    cyberpunk.defaults.headers.common = { Authorization: `bearer ${getToken}` }
+
+    let [err, response] = await to(cyberpunk.put(`/post/${postId}`, values))
+
+    if (err) {
+      console.error("%c err", "background: red", err)
+      const safeError = {
+        response: {
+          data: {},
+          ...err
+        }
+      }
+      errorLog(safeError.response.data)
+      dispatch(setLoading(false))
+    } else {
+      await dispatch(updatePosts(response.data))
+      await dispatch(fetchPosts(response.data))
+      dispatch(setLoading(false))
+      //await dispatch(reset('NewPost'))
+      history.push("/homepage")
+    }
+  }
+}
+
 export const fetchSinglePost = postId => {
   return async dispatch => {
     dispatch(setLoading(true))
@@ -128,7 +157,6 @@ export const fetchPosts = () => {
   }
 }
 
-
 export const deletePost = postId => {
   const getToken1 = JSON.parse(localStorage.getItem("jwt"))
   const getToken = (getToken1 && getToken1.token) || "noToken"
@@ -141,7 +169,6 @@ export const deletePost = postId => {
     dispatch(fetchPosts())
   }
 }
-
 
 const setLoading = state => {
   return { type: IS_LOADING, status: state }

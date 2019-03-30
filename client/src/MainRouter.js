@@ -15,6 +15,7 @@ import DeleteUser from "./components/user/DeleteUser"
 import EditProfile from "./components/user/EditProfile"
 import PrivateRoute from "./PrivateRoute"
 import PostInfo from "./components/post/PostInfo"
+import EditPost from "./components/post/EditPost"
 
 const PATH = process.env.NODE_ENV === "production" ? "/" : "/"
 
@@ -202,6 +203,12 @@ const MainRouter = ({ signOut, user }) => {
                   path={`${PATH}post/:postId`}
                   render={props => (
                     <PostInfo isExpanded={expanded} {...props} />
+                  )}
+                />
+                <Route
+                  path={`${PATH}editPost/:postId`}
+                  render={props => (
+                    <EditPost isExpanded={expanded} {...props} />
                   )}
                 />
                 <PrivateRoute

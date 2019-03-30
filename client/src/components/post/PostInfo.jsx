@@ -25,9 +25,8 @@ class PostInfo extends Component {
   }
 
   deletePost = postId => {
-    console.log("%c postId", "background: red", postId)
     this.props.deletePost(postId)
-    this.props.history.push('/homepage')
+    this.props.history.push("/homepage")
   }
 
   render() {
@@ -79,12 +78,16 @@ class PostInfo extends Component {
             <Button
               animate
               layer="success"
-              onClick={() => this.props.history.push(`/homepage`)}
+              onClick={() => this.props.history.push(`/editPost/${post._id}`)}
             >
               <Icon path={mdiChemicalWeapon} size={0.5} color="green" spin />{" "}
               EDIT POST
             </Button>
-            <Button animate layer="alert" onClick={() => this.deletePost(post._id)}>
+            <Button
+              animate
+              layer="alert"
+              onClick={() => this.deletePost(post._id)}
+            >
               <Icon path={mdiRobot} size={0.5} color="red" /> DELETE POST
             </Button>
             <Button
