@@ -49,7 +49,6 @@ class PostInfo extends Component {
     if (!getComments.length) {
       return
     }
-    console.log("%c getComments", "background: purple", getComments)
     return (
       <CommentsContainer>
         {getComments.map(comment => {
@@ -81,10 +80,7 @@ class PostInfo extends Component {
   }
 
   render() {
-    const { post, isLoading, user } = this.props
-
-    const getComments = get(post, "comments", [])
-    console.log("%c getComments", "background: purple", getComments)
+    const { post, isLoading } = this.props
 
     const postedBy = post && post.postedBy && post.postedBy.name
 
