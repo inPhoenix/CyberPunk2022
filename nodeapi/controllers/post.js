@@ -134,7 +134,6 @@ exports.singlePost = (req, res) => {
 }
 
 exports.comment = (req, res) => {
-  console.log("velho eu estou aqui?")
   let comment = req.body.comment
   comment.postedBy = req.body.userId
 
@@ -161,10 +160,9 @@ exports.comment = (req, res) => {
 
 exports.uncomment = (req, res) => {
   let comment = req.body.comment
-
-  Post.findByIdAndDelete(
+  Post.findByIdAndUpdate(
     req.body.postId,
-    { $push: { comments: { _id: comment._id } } },
+    { $pull: { comments: { _id: comment._id } } },
     { new: true }
   )
     .populate("comments.postedBy", "_id name")

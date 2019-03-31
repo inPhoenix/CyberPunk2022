@@ -195,7 +195,6 @@ export const uncommentPost = (userId, postId, comment) => {
   const getToken1 = JSON.parse(localStorage.getItem("jwt"))
   const getToken = (getToken1 && getToken1.token) || "noToken"
   return async dispatch => {
-    dispatch(setLoading(true))
     cyberpunk.defaults.headers.common = { Authorization: `bearer ${getToken}` }
 
     const values = {
@@ -215,13 +214,9 @@ export const uncommentPost = (userId, postId, comment) => {
         }
       }
       errorLog(safeError.response.data)
-      dispatch(setLoading(false))
     } else {
       await dispatch(updatePosts(response.data))
-      await dispatch(fetchPosts(response.data))
-      dispatch(setLoading(false))
-      //await dispatch(reset('NewPost'))
-      history.push("/homepage")
+      await dispatch(fetchSinglePostAfterComment(postId))
     }
   }
 }

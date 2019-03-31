@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Arwes, Blockquote, Button, Loading, Project, Words } from "arwes"
+import { Arwes, Button, Loading, Project, Words } from "arwes"
 import { connect } from "react-redux"
 import { commentPost, deletePost, fetchSinglePost } from "./redux/reducers"
 import { Text } from "../../common/styled/Text"
@@ -12,6 +12,7 @@ import { ButtonBar } from "../Styled"
 import styled from "styled-components"
 import { Field, getFormValues, reduxForm, reset } from "redux-form"
 import get from "lodash.get"
+import Comment from "./Comment"
 
 const CommentBoxContainer = styled.div`
   margin-top: 50px;
@@ -43,7 +44,9 @@ class PostInfo extends Component {
   }
 
   renderComments = () => {
-    const { post } = this.props
+    const { match, user, post } = this.props
+    const getPostId = match.params.postId
+    const getUserId = get(user, "loaded.user._id")
 
     const getComments = get(post, "comments", [])
     if (!getComments.length) {
@@ -53,14 +56,7 @@ class PostInfo extends Component {
       <CommentsContainer>
         {getComments.map(comment => {
           return (
-            <div>
-              <Blockquote>
-                {comment.text}
-                {get(comment, "postedBy.name") && (
-                  <span>Posted by: {comment.postedBy.name} </span>
-                )}
-              </Blockquote>
-            </div>
+            <Comment comment={comment} postId={getPostId} userId={getUserId} />
           )
         })}
       </CommentsContainer>
@@ -149,9 +145,7 @@ class PostInfo extends Component {
               <i className="mdi mdi-chemical-weapon" /> BACK TO HOME
             </Button>
           </ButtonBar>
-
           {this.renderComments()}
-
           <CommentBoxContainer>
             <Field name="text" component="input" className="form-control" />
             <div>
