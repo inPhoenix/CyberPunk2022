@@ -1,7 +1,7 @@
 import React, { Component } from "react"
-import { Arwes, Button, Loading, Project, Words } from "arwes"
+import { Arwes, Blockquote, Button, Loading, Project, Words } from "arwes"
 import { connect } from "react-redux"
-import { deletePost, fetchSinglePost } from "./redux/reducers"
+import { commentPost, deletePost, fetchSinglePost } from "./redux/reducers"
 import { Text } from "../../common/styled/Text"
 import format from "date-fns/format"
 import parseISO from "date-fns/parseISO"
@@ -9,6 +9,24 @@ import isSameDay from "date-fns/isSameDay"
 import { mdiChemicalWeapon, mdiRobot } from "@mdi/js"
 import Icon from "@mdi/react"
 import { ButtonBar } from "../Styled"
+import styled from "styled-components"
+import { Field, getFormValues, reduxForm } from "redux-form"
+import get from "lodash.get"
+
+const CommentBoxContainer = styled.div`
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+`
+
+const CommentsContainer = styled.div`
+  margin-top: 80px;
+  span {
+    font-size: 0.8rem;
+    padding-left: 30px;
+    color: aqua;
+  }
+`
 
 class PostInfo extends Component {
   state = {
@@ -24,13 +42,49 @@ class PostInfo extends Component {
     }, 700)
   }
 
+  renderComments = () => {
+    const { post } = this.props
+
+    const getComments = get(post, "comments", [])
+    if (!getComments.length) {
+      return
+    }
+    console.log("%c getComments", "background: purple", getComments)
+    return (
+      <CommentsContainer>
+        {getComments.map(comment => {
+          return (
+            <div>
+              <Blockquote>
+                {comment.text}
+                {get(comment, "postedBy.name") && (
+                  <span>Posted by: {comment.postedBy.name} </span>
+                )}
+              </Blockquote>
+            </div>
+          )
+        })}
+      </CommentsContainer>
+    )
+  }
+
   deletePost = postId => {
     this.props.deletePost(postId)
     this.props.history.push("/homepage")
   }
 
+  submit = comment => {
+    const { match, user } = this.props
+    const getPostId = match.params.postId
+    const getUserId = get(user, "loaded.user._id")
+    this.props.commentPost(getUserId, getPostId, comment)
+  }
+
   render() {
-    const { post, isLoading } = this.props
+    const { post, isLoading, user } = this.props
+
+    const getComments = get(post, "comments", [])
+    console.log("%c getComments", "background: purple", getComments)
 
     const postedBy = post && post.postedBy && post.postedBy.name
 
@@ -98,20 +152,36 @@ class PostInfo extends Component {
               <i className="mdi mdi-chemical-weapon" /> BACK TO HOME
             </Button>
           </ButtonBar>
+
+          {this.renderComments()}
+
+          <CommentBoxContainer>
+            <Field name="text" component="input" className="form-control" />
+            <div>
+              <Button onClick={this.props.handleSubmit(this.submit)}>
+                Submit Comment
+              </Button>
+            </div>
+          </CommentBoxContainer>
         </div>
       </Arwes>
     )
   }
 }
 
-const mapState = state => {
+const FORM_NAME = "PostInfo"
+const form = reduxForm({ form: FORM_NAME })(PostInfo)
+
+const mapStateToProps = state => {
   return {
+    formValues: getFormValues(FORM_NAME)(state),
     post: state.posts.single,
-    isLoading: state.posts.isLoading
+    isLoading: state.posts.isLoading,
+    user: state.user
   }
 }
 
 export default connect(
-  mapState,
-  { fetchSinglePost, deletePost }
-)(PostInfo)
+  mapStateToProps,
+  { fetchSinglePost, deletePost, commentPost }
+)(form)

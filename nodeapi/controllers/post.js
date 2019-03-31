@@ -1,3 +1,4 @@
+const chalk = require("chalk")
 const Post = require("../models/post")
 const formidable = require("formidable")
 const fs = require("fs")
@@ -5,6 +6,8 @@ const extend = require("lodash/extend")
 
 exports.postById = (req, res, next, id) => {
   Post.findById(id)
+    .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
     .populate("postedBy", "_id name")
     .exec((err, post) => {
       if (err || !post) {
@@ -20,6 +23,8 @@ exports.postById = (req, res, next, id) => {
 exports.getPosts = (req, res) => {
   const posts = Post.find()
     .populate("postedBy", "_id name")
+    .populate("comments", "text created")
+    .populate("comments.postedBy", "_id name")
     .select("_id title body created")
     .sort({ created: -1 }) // reorder
     .then(posts => {
@@ -126,4 +131,51 @@ exports.deletePost = (req, res) => {
 
 exports.singlePost = (req, res) => {
   return res.json(req.post)
+}
+
+exports.comment = (req, res) => {
+  console.log("velho eu estou aqui?")
+  let comment = req.body.comment
+  comment.postedBy = req.body.userId
+
+  // console.log(comment)
+  // console.log(chalk.blue('VAI'))
+
+  Post.findByIdAndUpdate(
+    req.body.postId,
+    { $push: { comments: comment } },
+    { new: true }
+  )
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id name")
+    .exec((err, result) => {
+      if (err) {
+        return res.status(400).json({
+          error: err
+        })
+      } else {
+        res.json(result)
+      }
+    })
+}
+
+exports.uncomment = (req, res) => {
+  let comment = req.body.comment
+
+  Post.findByIdAndDelete(
+    req.body.postId,
+    { $push: { comments: { _id: comment._id } } },
+    { new: true }
+  )
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id name")
+    .exec((err, result) => {
+      if (err) {
+        return res.status(400).json({
+          error: err
+        })
+      } else {
+        res.json(result)
+      }
+    })
 }

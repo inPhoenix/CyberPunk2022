@@ -155,6 +155,79 @@ export const fetchPosts = () => {
   }
 }
 
+export const commentPost = (userId, postId, comment) => {
+  const getToken1 = JSON.parse(localStorage.getItem("jwt"))
+  const getToken = (getToken1 && getToken1.token) || "noToken"
+  return async dispatch => {
+    dispatch(setLoading(true))
+    cyberpunk.defaults.headers.common = { Authorization: `bearer ${getToken}` }
+
+    const values = {
+      userId,
+      postId,
+      comment
+    }
+
+    let [err, response] = await to(cyberpunk.put(`/post/comment`, values))
+
+    if (err) {
+      console.error("%c err", "background: red", err)
+      const safeError = {
+        response: {
+          data: {},
+          ...err
+        }
+      }
+      errorLog(safeError.response.data)
+      dispatch(setLoading(false))
+    } else {
+      await dispatch(updatePosts(response.data))
+      await dispatch(fetchPosts(response.data))
+      dispatch(setLoading(false))
+      //await dispatch(reset('NewPost'))
+      history.push("/homepage")
+    }
+  }
+}
+
+
+export const uncommentPost = (userId, postId, comment) => {
+  const getToken1 = JSON.parse(localStorage.getItem("jwt"))
+  const getToken = (getToken1 && getToken1.token) || "noToken"
+  return async dispatch => {
+    dispatch(setLoading(true))
+    cyberpunk.defaults.headers.common = { Authorization: `bearer ${getToken}` }
+
+    const values = {
+      userId,
+      postId,
+      comment
+    }
+
+    let [err, response] = await to(cyberpunk.put(`/post/uncomment`, values))
+
+    if (err) {
+      console.error("%c err", "background: red", err)
+      const safeError = {
+        response: {
+          data: {},
+          ...err
+        }
+      }
+      errorLog(safeError.response.data)
+      dispatch(setLoading(false))
+    } else {
+      await dispatch(updatePosts(response.data))
+      await dispatch(fetchPosts(response.data))
+      dispatch(setLoading(false))
+      //await dispatch(reset('NewPost'))
+      history.push("/homepage")
+    }
+  }
+}
+
+
+
 export const deletePost = postId => {
   const getToken1 = JSON.parse(localStorage.getItem("jwt"))
   const getToken = (getToken1 && getToken1.token) || "noToken"

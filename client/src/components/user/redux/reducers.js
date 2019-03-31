@@ -134,8 +134,10 @@ export const signOut = () => {
 
     if (err) {
       const safeError = {
-        data: {},
-        ...err
+        response: {
+          data: 'error',
+          ...err
+        }
       }
       errorLog(safeError.response.data)
       dispatch(setLoading(false))
