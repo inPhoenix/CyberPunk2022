@@ -10,7 +10,7 @@ import { mdiChemicalWeapon, mdiRobot } from "@mdi/js"
 import Icon from "@mdi/react"
 import { ButtonBar } from "../Styled"
 import styled from "styled-components"
-import { Field, getFormValues, reduxForm } from "redux-form"
+import { Field, getFormValues, reduxForm, reset } from "redux-form"
 import get from "lodash.get"
 
 const CommentBoxContainer = styled.div`
@@ -77,6 +77,7 @@ class PostInfo extends Component {
     const getPostId = match.params.postId
     const getUserId = get(user, "loaded.user._id")
     this.props.commentPost(getUserId, getPostId, comment)
+    this.props.dispatch(reset("PostInfo"))
   }
 
   render() {
