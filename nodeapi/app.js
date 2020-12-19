@@ -63,7 +63,7 @@ app.use(morgan("dev"))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(expressValidator())
-//app.use(cors())
+// app.use(cors()) // IF local does not work just use this
 app.use(cors({ origin, credentials: true }));
 app.use("/", postRoute)
 app.use("/", authRoutes)
