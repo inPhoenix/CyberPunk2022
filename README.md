@@ -22,6 +22,7 @@ heroku logs --tail
 heroku git:remote -a cybersocial
 git push heroku master
 
+Remember to update the variables on heroku as well
 
 Improvements:
 
