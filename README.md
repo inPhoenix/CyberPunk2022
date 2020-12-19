@@ -16,7 +16,12 @@ run locally:
 
 # Heroku debug
 
+heroku login
+heroku apps
 heroku logs --tail
+heroku git:remote -a cybersocial
+git push heroku master
+
 
 Improvements:
 
